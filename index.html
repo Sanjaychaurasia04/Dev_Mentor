@@ -1,0 +1,3730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevMentor — Learn to Code. For India.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --black: #080810;
+      --surface-1: #0f0f1a;
+      --surface-2: #16162a;
+      --surface-3: #1e1e35;
+      --surface-4: #262640;
+
+      --orange: #f97316;
+      --orange-light: #fb923c;
+      --orange-dim: rgba(249, 115, 22, 0.15);
+
+      --teal: #14b8a6;
+      --teal-light: #2dd4bf;
+      --teal-dim: rgba(20, 184, 166, 0.12);
+
+      --red: #ef4444;
+      --yellow: #eab308;
+      --violet: #8b5cf6;
+      --green: #22c55e;
+
+      --border: rgba(255, 255, 255, 0.07);
+      --border-strong: rgba(255, 255, 255, 0.14);
+
+      --text: #e8e4f0;
+      --text-muted: #7c78a0;
+      --text-faint: #3d3a55;
+
+      --font-ui: 'Outfit', sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+      --font-devanagari: 'Noto Sans Devanagari', sans-serif;
+
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--black);
+      color: var(--text);
+      font-family: var(--font-ui);
+      font-size: 14px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    #app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* scrollbar */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--surface-4) transparent;
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: var(--surface-4); border-radius: 4px; }
+
+    /* subtle dot grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image: radial-gradient(rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 10%, black 20%, transparent 80%);
+    }
+
+    /* ---- Glow blobs ---- */
+    .bg-blobs {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .bg-blobs span {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.06;
+      animation: blobDrift 22s ease-in-out infinite;
+    }
+    .bg-blobs span:nth-child(1) {
+      width: 500px; height: 500px;
+      background: var(--orange);
+      top: -15%; left: -10%;
+      animation-delay: 0s;
+    }
+    .bg-blobs span:nth-child(2) {
+      width: 420px; height: 420px;
+      background: var(--teal);
+      top: 35%; right: -12%;
+      animation-delay: 8s;
+    }
+    .bg-blobs span:nth-child(3) {
+      width: 360px; height: 360px;
+      background: var(--violet);
+      bottom: -10%; left: 42%;
+      animation-delay: 16s;
+    }
+
+    @keyframes blobDrift {
+      0%, 100% { transform: translate(0, 0); }
+      33% { transform: translate(40px, -30px); }
+      66% { transform: translate(-25px, 40px); }
+    }
+
+    /* ---- Typography ---- */
+    h1, h2, h3, h4 {
+      font-family: var(--font-ui);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    /* ---- Layout ---- */
+    .page-wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---- Buttons ---- */
+    button {
+      font-family: var(--font-ui);
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: all 0.18s ease;
+    }
+    button:active {
+      transform: scale(0.97);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      padding: 10px 20px;
+      font-size: 13.5px;
+      white-space: nowrap;
+    }
+
+    .btn-orange {
+      background: var(--orange);
+      color: #fff;
+      box-shadow: 0 0 0 1px rgba(249,115,22,0.3), 0 4px 16px rgba(249,115,22,0.25);
+    }
+    .btn-orange:hover {
+      background: var(--orange-light);
+      box-shadow: 0 0 0 1px rgba(249,115,22,0.4), 0 8px 24px rgba(249,115,22,0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn-teal {
+      background: var(--teal);
+      color: #080810;
+      font-weight: 700;
+      box-shadow: 0 0 0 1px rgba(20,184,166,0.3), 0 4px 16px rgba(20,184,166,0.2);
+    }
+    .btn-teal:hover {
+      background: var(--teal-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: var(--surface-2);
+      color: var(--text-muted);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .btn-ghost:hover {
+      background: var(--surface-3);
+      color: var(--text);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+    }
+    .btn-outline:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+
+    .btn-sm {
+      padding: 7px 14px;
+      font-size: 12.5px;
+    }
+
+    /* ---- Cards ---- */
+    .card {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      border-color: var(--border-strong);
+    }
+
+    /* ---- Tags / badges ---- */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 9px;
+      border-radius: 100px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .tag-orange { background: var(--orange-dim); color: var(--orange-light); border: 1px solid rgba(249,115,22,0.25); }
+    .tag-teal   { background: var(--teal-dim);   color: var(--teal-light);   border: 1px solid rgba(20,184,166,0.22); }
+    .tag-red    { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.22); }
+    .tag-yellow { background: rgba(234,179,8,0.1); color: #fde047; border: 1px solid rgba(234,179,8,0.22); }
+    .tag-violet { background: rgba(139,92,246,0.1); color: #a78bfa; border: 1px solid rgba(139,92,246,0.22); }
+    .tag-green  { background: rgba(34,197,94,0.1); color: #4ade80; border: 1px solid rgba(34,197,94,0.22); }
+    .tag-muted  { background: var(--surface-3); color: var(--text-muted); border: 1px solid var(--border); }
+
+    /* ---- Progress bars ---- */
+    .progress-track {
+      height: 4px;
+      background: var(--surface-3);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .xp-track {
+      height: 6px;
+      background: var(--surface-3);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .xp-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--teal), var(--violet));
+      box-shadow: 0 0 10px rgba(20,184,166,0.4);
+      transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* ---- Inputs ---- */
+    input, textarea, select {
+      font-family: var(--font-ui);
+      font-size: 13.5px;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border-strong);
+      color: var(--text);
+      border-radius: var(--radius-sm);
+      outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: rgba(20,184,166,0.5);
+      box-shadow: 0 0 0 3px rgba(20,184,166,0.07);
+    }
+    select option {
+      background: var(--surface-2);
+    }
+
+    /* ---- Navbar ---- */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(8, 8, 16, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .navbar-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-right: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .nav-logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--orange), #c2410c);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      box-shadow: 0 0 16px rgba(249,115,22,0.35);
+    }
+    .nav-logo-text {
+      text-align: left;
+    }
+    .nav-logo-text .name {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo-text .sub {
+      font-family: var(--font-mono);
+      font-size: 7.5px;
+      color: var(--orange-light);
+      letter-spacing: 0.2em;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .nav-link:hover {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+    .nav-link.active {
+      background: rgba(249,115,22,0.1);
+      color: var(--orange-light);
+      border: 1px solid rgba(249,115,22,0.18);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .streak-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .streak-badge .count {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--orange-light);
+    }
+
+    .xp-display {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .xp-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal), var(--violet));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      box-shadow: 0 0 10px rgba(20,184,166,0.3);
+    }
+    .xp-text {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--teal);
+      line-height: 1;
+    }
+    .xp-level {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--text-faint);
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), #dc2626);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 2px var(--black), 0 0 0 4px rgba(249,115,22,0.35);
+    }
+
+    /* ---- Language picker ---- */
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--surface-2);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .lang-btn:hover {
+      background: var(--surface-3);
+      color: var(--text);
+    }
+
+    .lang-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: var(--surface-1);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius);
+      padding: 6px;
+      z-index: 200;
+      min-width: 155px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.7);
+    }
+    .lang-option {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 7px 11px;
+      border-radius: 6px;
+      background: none;
+      border: none;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .lang-option:hover {
+      background: var(--surface-3);
+      color: var(--text);
+    }
+    .lang-option.selected {
+      background: var(--surface-2);
+      color: var(--teal);
+    }
+
+    /* ---- Sidebar ---- */
+    .sidebar-btn {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      width: 100%;
+      padding: 9px 11px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s;
+    }
+    .sidebar-btn:hover {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+    .sidebar-btn.active {
+      background: var(--teal-dim);
+      color: var(--teal-light);
+      border: 1px solid rgba(20,184,166,0.2);
+    }
+
+    /* ---- Chat bubbles ---- */
+    .bubble-user {
+      background: linear-gradient(135deg, var(--orange), #c2410c);
+      color: #fff;
+      padding: 11px 16px;
+      border-radius: 18px 18px 4px 18px;
+      max-width: 75%;
+      margin-left: auto;
+      font-size: 13.5px;
+      line-height: 1.6;
+      box-shadow: 0 4px 16px rgba(249,115,22,0.25);
+      word-break: break-word;
+    }
+    .bubble-ai {
+      background: var(--surface-2);
+      border: 1px solid var(--border-strong);
+      color: var(--text);
+      padding: 11px 16px;
+      border-radius: 18px 18px 18px 4px;
+      max-width: 85%;
+      font-size: 13.5px;
+      line-height: 1.65;
+      word-break: break-word;
+    }
+
+    /* ---- Code editor ---- */
+    .code-editor {
+      background: #06060e;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      line-height: 1.85;
+      color: #9effd8;
+      padding: 18px;
+      resize: none;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.18s;
+    }
+    .code-editor:focus {
+      border-color: rgba(20,184,166,0.35);
+    }
+
+    /* ---- Toast ---- */
+    .toast-wrap {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9000;
+      background: var(--surface-2);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 275px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.65);
+      animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(16px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ---- Confetti pieces ---- */
+    .confetti-piece {
+      position: fixed;
+      top: -10px;
+      border-radius: 2px;
+      animation: confettiFall linear both;
+      z-index: 9999;
+      pointer-events: none;
+    }
+    @keyframes confettiFall {
+      0%   { opacity: 1; transform: translateY(0) rotate(0deg); }
+      100% { opacity: 0; transform: translateY(105vh) rotate(720deg); }
+    }
+
+    /* ---- Loader dots ---- */
+    .loader-dots {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .loader-dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+      animation: dotBounce 1.4s ease-in-out infinite;
+    }
+    .loader-dots span:nth-child(2) { animation-delay: 0.16s; }
+    .loader-dots span:nth-child(3) { animation-delay: 0.32s; }
+    @keyframes dotBounce {
+      0%, 80%, 100% { transform: scale(0.4); opacity: 0.4; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+
+    /* ---- Spinner ---- */
+    .spinner {
+      width: 22px;
+      height: 22px;
+      border: 2.5px solid var(--border-strong);
+      border-top-color: var(--teal);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ---- Page animations ---- */
+    .fade-in {
+      animation: pageFadeIn 0.3s ease both;
+    }
+    @keyframes pageFadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---- Dashboard specific ---- */
+    .hero-section {
+      background: linear-gradient(135deg, rgba(249,115,22,0.06), rgba(139,92,246,0.04), rgba(20,184,166,0.05));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 40px 44px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      right: 80px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(249,115,22,0.1), transparent 65%);
+      pointer-events: none;
+    }
+    .hero-section::after {
+      content: '';
+      position: absolute;
+      bottom: -50px;
+      left: 45%;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(20,184,166,0.08), transparent 65%);
+      pointer-events: none;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-strong);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+    }
+
+    .path-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .path-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      cursor: pointer;
+      background: var(--surface-1);
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .path-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 330px;
+      gap: 20px;
+    }
+
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* ---- Activity feed ---- */
+    .activity-row {
+      display: flex;
+      gap: 11px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+      transition: padding-left 0.15s;
+    }
+    .activity-row:last-child { border-bottom: none; }
+    .activity-row:hover { padding-left: 4px; }
+
+    /* ---- Quick actions ---- */
+    .quick-action {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 10px 14px;
+      background: none;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.14s;
+      text-align: left;
+    }
+    .quick-action:first-of-type { border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+    .quick-action:last-of-type  { border-bottom: none; border-radius: 0 0 var(--radius-sm) var(--radius-sm); }
+    .quick-action:hover {
+      background: var(--surface-2);
+      color: var(--text);
+      padding-left: 18px;
+    }
+
+    /* ---- Module list ---- */
+    .module-row {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 9px 14px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.12s;
+    }
+    .module-row:hover { background: rgba(255,255,255,0.025); }
+    .module-row:last-child { border-bottom: none; }
+
+    /* ---- Leaderboard ---- */
+    .lb-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: var(--radius-sm);
+      transition: background 0.12s;
+      cursor: pointer;
+      margin-bottom: 2px;
+    }
+    .lb-row:hover { background: var(--surface-2); }
+
+    /* ---- Code review pane tabs ---- */
+    .tab-bar {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      padding: 0 4px;
+      flex-shrink: 0;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 11px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.14s;
+      color: var(--text-muted);
+    }
+    .tab-btn.active {
+      color: var(--teal-light);
+      border-bottom-color: var(--teal);
+    }
+    .tab-btn:hover:not(.active) { color: var(--text); }
+
+    /* ---- Separators ---- */
+    .separator {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+      margin: 16px 0;
+    }
+
+    /* ---- Floating label inputs ---- */
+    .field-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    /* ---- Gradient text ---- */
+    .text-gradient-orange {
+      background: linear-gradient(135deg, var(--orange), #fbbf24, #ef4444);
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 5s ease infinite;
+    }
+    .text-gradient-teal {
+      background: linear-gradient(135deg, var(--teal), var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* ---- Bharat mode toggle ---- */
+    .toggle-switch {
+      position: relative;
+      width: 34px;
+      height: 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+    }
+    .toggle-knob {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #fff;
+      top: 3px;
+      transition: left 0.2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+
+    /* ---- Voice btn ---- */
+    .voice-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      background: linear-gradient(135deg, var(--orange), #dc2626);
+      box-shadow: 0 4px 14px rgba(249,115,22,0.3);
+    }
+    .voice-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 22px rgba(249,115,22,0.45);
+    }
+    .voice-btn.recording {
+      animation: pulseRing 1.2s ease-in-out infinite;
+    }
+    @keyframes pulseRing {
+      0%, 100% { box-shadow: 0 0 0 0px rgba(249,115,22,0.5), 0 4px 14px rgba(249,115,22,0.3); }
+      50% { box-shadow: 0 0 0 8px rgba(249,115,22,0.0), 0 4px 14px rgba(249,115,22,0.5); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.96) translateY(8px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* ---- Divider with text ---- */
+    .divider-text {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-faint);
+      font-size: 11px;
+    }
+    .divider-text::before,
+    .divider-text::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ---- Career roadmap ---- */
+    .roadmap-step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 26px;
+    }
+    .roadmap-line {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 20px;
+      flex-shrink: 0;
+    }
+    .roadmap-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .roadmap-connector {
+      width: 2px;
+      flex: 1;
+      min-height: 20px;
+      border-radius: 1px;
+      margin-top: 4px;
+    }
+
+    /* ---- Community posts ---- */
+    .post-card {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .post-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.4);
+      border-color: var(--border-strong);
+    }
+
+    /* ---- Trending sidebar items ---- */
+    .trending-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .trending-row:last-child { border-bottom: none; }
+
+    /* ---- City bar ---- */
+    .city-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .city-row:last-child { border-bottom: none; }
+
+    /* ---- Footer ---- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(8,8,16,0.9);
+      backdrop-filter: blur(16px);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ---- Challenge card ---- */
+    .challenge-card {
+      min-width: 280px;
+      background: linear-gradient(135deg, rgba(249,115,22,0.09), rgba(239,68,68,0.06));
+      border: 1px solid rgba(249,115,22,0.22);
+      border-radius: 14px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .challenge-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--orange), var(--red));
+    }
+
+    .timer-digit {
+      background: rgba(0,0,0,0.3);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--orange-light);
+      border: 1px solid rgba(249,115,22,0.2);
+      min-width: 36px;
+      text-align: center;
+      line-height: 1;
+    }
+
+    /* ---- Level card ---- */
+    .level-card {
+      background: linear-gradient(135deg, rgba(20,184,166,0.08), rgba(139,92,246,0.05));
+      border: 1px solid rgba(20,184,166,0.15);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+    }
+
+    /* ---- Achievements grid ---- */
+    .achievement-item {
+      text-align: center;
+      padding: 11px 6px;
+      border-radius: 9px;
+      transition: transform 0.18s;
+      cursor: pointer;
+    }
+    .achievement-item:hover { transform: translateY(-2px); }
+
+    /* ---- Filter pills (community) ---- */
+    .filter-pill {
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-2);
+      color: var(--text-muted);
+      transition: all 0.15s;
+    }
+    .filter-pill.active {
+      background: var(--teal-dim);
+      border-color: rgba(20,184,166,0.35);
+      color: var(--teal-light);
+    }
+    .filter-pill:hover:not(.active) {
+      background: var(--surface-3);
+      color: var(--text);
+    }
+
+    /* ---- Skill Galaxy ---- */
+    .galaxy-node {
+      position: absolute;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      transition: transform 0.2s;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .galaxy-node:hover { transform: scale(1.15); z-index: 10; }
+  </style>
+</head>
+<body>
+<div id="app"></div>
+
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+  const { useState, useEffect, useRef, useCallback } = React;
+
+  // ----- Constants -----
+  const LANGUAGES = [
+    { code: 'en', label: 'English',   native: 'English' },
+    { code: 'hi', label: 'Hindi',     native: 'हिन्दी' },
+    { code: 'ta', label: 'Tamil',     native: 'தமிழ்' },
+    { code: 'te', label: 'Telugu',    native: 'తెలుగు' },
+    { code: 'bn', label: 'Bengali',   native: 'বাংলা' },
+    { code: 'mr', label: 'Marathi',   native: 'मराठी' },
+    { code: 'gu', label: 'Gujarati',  native: 'ગુજરાતી' },
+    { code: 'kn', label: 'Kannada',   native: 'ಕನ್ನಡ' },
+    { code: 'ml', label: 'Malayalam', native: 'മലയാളം' },
+    { code: 'pa', label: 'Punjabi',   native: 'ਪੰਜਾਬੀ' },
+  ];
+
+  const LEARNING_PATHS = [
+    { id: 'fullstack',  emoji: '⚡', title: 'Full Stack Dev',        subtitle: 'React · Node · AWS',        color: '#f97316', xp: 2400, totalXp: 3600, done: 5, total: 8 },
+    { id: 'aiml',       emoji: '🧠', title: 'AI and Machine Learning', subtitle: 'Python · TensorFlow',       color: '#8b5cf6', xp: 800,  totalXp: 3600, done: 2, total: 8 },
+    { id: 'cloud',      emoji: '☁', title: 'Cloud and DevOps',       subtitle: 'AWS · Kubernetes',          color: '#14b8a6', xp: 600,  totalXp: 3600, done: 1, total: 8 },
+    { id: 'android',    emoji: '📱', title: 'Android Dev',            subtitle: 'Kotlin · Jetpack Compose',  color: '#ef4444', xp: 0,    totalXp: 3600, done: 0, total: 8 },
+    { id: 'startup',    emoji: '🚀', title: 'Startup Engineering',    subtitle: 'UPI · MVP · Scale',         color: '#eab308', xp: 1200, totalXp: 3600, done: 2, total: 8 },
+    { id: 'dsa',        emoji: '💡', title: 'DSA and Interview Prep', subtitle: 'LeetCode · System Design',  color: '#22c55e', xp: 3000, totalXp: 3600, done: 6, total: 8 },
+  ];
+
+  const MODULE_TOPICS = {
+    fullstack: ['HTML and CSS Deep Dive', 'JavaScript ES2024', 'React Fundamentals to Advanced', 'State Management at Scale', 'Node.js and Express', 'REST API Design', 'MongoDB and PostgreSQL', 'AWS Deployment Pipeline'],
+    aiml:      ['Python for Data Science', 'NumPy and Pandas', 'Scikit-learn ML', 'Neural Networks Basics', 'NLP Fundamentals', 'AWS SageMaker', 'MLOps and CI/CD', 'Generative AI with Bedrock'],
+    cloud:     ['AWS Core Services', 'IAM and Security', 'EC2 and VPC Setup', 'S3 and CloudFront CDN', 'Lambda and Serverless', 'RDS and DynamoDB', 'Terraform IaC', 'Cost Optimisation'],
+    android:   ['Kotlin Essentials', 'Android Architecture', 'Jetpack Compose', 'Room Database', 'Retrofit and APIs', 'Firebase Integration', 'Play Store Publishing', 'Monetisation Strategy'],
+    startup:   ['MVP Planning', 'Tech Stack Selection', 'Razorpay and UPI Integration', 'User Auth and OTP', 'Analytics and Growth', 'Scaling on AWS', 'Legal and GST Basics', 'Fundraising Pitch'],
+    dsa:       ['Arrays and Strings', 'Linked Lists and Trees', 'Graphs BFS DFS', 'Dynamic Programming', 'Greedy Algorithms', 'System Design Intro', 'Distributed Systems', 'Full Mock Interviews'],
+  };
+
+  const COMPANIES = ['Razorpay', 'Flipkart', 'Zomato', 'CRED', 'Meesho', 'PhonePe', 'Swiggy', 'Groww', 'Ola', 'Paytm', 'Google India', 'Microsoft India', 'Amazon India', 'Infosys', 'TCS', 'Atlassian India'];
+
+  const ACHIEVEMENTS = [
+    { emoji: '🏅', title: 'First Commit',   earned: true  },
+    { emoji: '🔥', title: '14-Day Streak',  earned: true  },
+    { emoji: '⚡', title: 'Speed Coder',    earned: true  },
+    { emoji: '🧠', title: 'Deep Thinker',   earned: true  },
+    { emoji: '🌟', title: 'Community Star', earned: false },
+    { emoji: '🚀', title: 'Ship It',        earned: false },
+  ];
+
+  const LEADERBOARD_DATA = [
+    { rank: 1, name: 'Priya Sharma',   city: 'Bangalore', xp: 12400, initials: 'P', color: '#f97316' },
+    { rank: 2, name: 'Rahul Gupta',    city: 'Mumbai',    xp: 11800, initials: 'R', color: '#8b5cf6' },
+    { rank: 3, name: 'Vikram Singh',   city: 'Delhi',     xp: 10900, initials: 'V', color: '#14b8a6' },
+    { rank: 4, name: 'Ananya Iyer',    city: 'Chennai',   xp: 9600,  initials: 'A', color: '#ef4444' },
+    { rank: 5, name: 'Meera Patel',    city: 'Ahmedabad', xp: 8800,  initials: 'M', color: '#eab308' },
+    { rank: 6, name: 'Sanjay (you)',   city: 'Delhi NCR', xp: 7240,  initials: 'S', color: '#22c55e', isYou: true },
+  ];
+
+  const SAMPLE_CODE = `import razorpay
+import hmac
+import hashlib
+import os
+
+client = razorpay.Client(
+    auth=(os.getenv("RZP_KEY"), os.getenv("RZP_SECRET"))
+)
+
+def create_upi_order(amount_inr: int, customer_id: str) -> dict:
+    # Creates a Razorpay order for UPI payment
+    return client.order.create({
+        "amount":   amount_inr * 100,
+        "currency": "INR",
+        "receipt":  f"rcpt_{customer_id}",
+        "payment_capture": 1,
+    })
+
+def verify_signature(payload: bytes, signature: str) -> bool:
+    # BUG: fallback secret is a security risk
+    secret = os.getenv("WEBHOOK_SECRET", "default_secret")
+    expected = hmac.new(
+        secret.encode(), payload, hashlib.sha256
+    ).hexdigest()
+    return hmac.compare_digest(expected, signature)`;
+
+  // ----- API helpers -----
+  const GROQ_API_KEY = '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'; // 🔑 Replace with your key from console.groq.com
+  const GROQ_MODEL = 'llama-3.3-70b-versatile'; // Fast + free + smart
+
+  async function callClaude(systemPrompt, messages) {
+    try {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${GROQ_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: GROQ_MODEL,
+          max_tokens: 4000,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            ...messages.map(m => ({ role: m.role, content: m.content })),
+          ],
+        }),
+      });
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        return `Error ${response.status}: ${errData.error?.message || 'Something went wrong. Please try again.'}`;
+      }
+
+      const data = await response.json();
+      return data.choices?.[0]?.message?.content || 'No response returned.';
+    } catch (err) {
+      return 'Network error. Please check your connection and try again.';
+    }
+  }
+
+  // ----- Confetti component -----
+  function Confetti({ show }) {
+    if (!show) return null;
+
+    const pieces = Array.from({ length: 70 }, (_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      color: ['#f97316', '#14b8a6', '#ef4444', '#eab308', '#8b5cf6', '#22c55e', '#ffffff'][i % 7],
+      delay: Math.random() * 1.5,
+      duration: 2 + Math.random() * 2,
+      size: 5 + Math.random() * 8,
+    }));
+
+    return (
+      <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 9999, overflow: 'hidden' }}>
+        {pieces.map(p => (
+          <div
+            key={p.id}
+            className="confetti-piece"
+            style={{
+              left: `${p.left}%`,
+              width: p.size,
+              height: p.size * (p.id % 3 === 0 ? 0.4 : 1),
+              background: p.color,
+              borderRadius: p.id % 3 === 1 ? '50%' : '2px',
+              animationDuration: `${p.duration}s`,
+              animationDelay: `${p.delay}s`,
+            }}
+          />
+        ))}
+      </div>
+    );
+  }
+
+  // ----- Toast component -----
+  function Toast({ data, onClose }) {
+    useEffect(() => {
+      const timer = setTimeout(onClose, 3500);
+      return () => clearTimeout(timer);
+    }, [onClose]);
+
+    return (
+      <div className="toast-wrap">
+        <span style={{ fontSize: 30 }}>{data.icon}</span>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontWeight: 700, fontSize: 13.5, color: data.color || 'var(--teal-light)' }}>{data.title}</div>
+          <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>{data.subtitle}</div>
+        </div>
+        {data.xpGain && (
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: data.color || 'var(--teal-light)', fontWeight: 700 }}>
+            {data.xpGain}
+          </div>
+        )}
+        <button onClick={onClose} style={{ background: 'none', color: 'var(--text-faint)', fontSize: 14, padding: '2px 5px', borderRadius: 4 }}>x</button>
+      </div>
+    );
+  }
+
+  // ----- Navbar component -----
+  function Navbar({ currentPage, setCurrentPage, lang, setLang, xp, streak }) {
+    const [langMenuOpen, setLangMenuOpen] = useState(false);
+    const langRef = useRef(null);
+
+    useEffect(() => {
+      function handleClick(e) {
+        if (langRef.current && !langRef.current.contains(e.target)) {
+          setLangMenuOpen(false);
+        }
+      }
+      document.addEventListener('mousedown', handleClick);
+      return () => document.removeEventListener('mousedown', handleClick);
+    }, []);
+
+    const pages = [
+      { id: 'dashboard', label: 'Dashboard' },
+      { id: 'mentor',    label: 'AI Mentor' },
+      { id: 'review',    label: 'Code Review' },
+      { id: 'learn',     label: 'Learn' },
+      { id: 'career',    label: 'Career' },
+      { id: 'community', label: 'Community' },
+    ];
+
+    const currentLang = LANGUAGES.find(l => l.code === lang) || LANGUAGES[0];
+
+    return (
+      <nav className="navbar">
+        <div className="navbar-inner">
+          <button className="nav-logo" onClick={() => setCurrentPage('dashboard')}>
+            <div className="nav-logo-icon">⚡</div>
+            <div className="nav-logo-text">
+              <div className="name">DevMentor</div>
+              <div className="sub">FOR BHARAT</div>
+            </div>
+          </button>
+
+          <div style={{ display: 'flex', gap: '2px', flex: 1, overflowX: 'auto' }}>
+            {pages.map(p => (
+              <button
+                key={p.id}
+                className={`nav-link ${currentPage === p.id ? 'active' : ''}`}
+                onClick={() => setCurrentPage(p.id)}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="nav-right">
+            <div className="streak-badge">
+              <span style={{ fontSize: 15 }}>🔥</span>
+              <span className="count">{streak}d</span>
+            </div>
+
+            <div style={{ width: 1, height: 20, background: 'var(--border-strong)' }} />
+
+            <div className="xp-display">
+              <div className="xp-avatar">⭐</div>
+              <div>
+                <div className="xp-text">{xp.toLocaleString()}</div>
+                <div className="xp-level">LVL 7</div>
+              </div>
+            </div>
+
+            <div style={{ width: 1, height: 20, background: 'var(--border-strong)' }} />
+
+            <div ref={langRef} style={{ position: 'relative' }}>
+              <button className="lang-btn" onClick={() => setLangMenuOpen(!langMenuOpen)}>
+                🌐 {currentLang.label}
+                <span style={{ fontSize: 8, color: 'var(--text-faint)' }}>▾</span>
+              </button>
+              {langMenuOpen && (
+                <div className="lang-dropdown">
+                  {LANGUAGES.map(l => (
+                    <button
+                      key={l.code}
+                      className={`lang-option ${lang === l.code ? 'selected' : ''}`}
+                      style={{ fontFamily: l.code !== 'en' ? 'var(--font-devanagari)' : undefined }}
+                      onClick={() => { setLang(l.code); setLangMenuOpen(false); }}
+                    >
+                      {l.native}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="user-avatar">S</div>
+          </div>
+        </div>
+      </nav>
+    );
+  }
+
+  // ----- Dashboard page -----
+  function DashboardPage({ setCurrentPage, xp, setXp, streak, showToast }) {
+    const [challengeDone, setChallengeDone] = useState(false);
+    const [timeLeft, setTimeLeft] = useState(8 * 3600 + 43 * 60 + 22);
+
+    useEffect(() => {
+      const timer = setInterval(() => {
+        setTimeLeft(t => Math.max(0, t - 1));
+      }, 1000);
+      return () => clearInterval(timer);
+    }, []);
+
+    const hours   = String(Math.floor(timeLeft / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((timeLeft % 3600) / 60)).padStart(2, '0');
+    const seconds = String(timeLeft % 60).padStart(2, '0');
+
+    const stats = [
+      { value: '247', label: 'Problems Solved',  icon: '✅', color: 'var(--teal)'         },
+      { value: '14',  label: 'Day Streak',        icon: '🔥', color: 'var(--orange-light)' },
+      { value: '89',  label: 'Code Reviews',      icon: '🔍', color: 'var(--red)'          },
+      { value: '7.8', label: 'Average Score',     icon: '⭐', color: 'var(--yellow)'       },
+    ];
+
+    const recentActivity = [
+      { icon: '📚', text: 'Completed React Deep Dive - Module 3 of 8',  when: '2h ago',      color: 'var(--orange)' },
+      { icon: '🔍', text: 'Fixed memory leak in useEffect cleanup',       when: '5h ago',      color: 'var(--teal)'   },
+      { icon: '🏅', text: 'Earned badge: AWS Lambda Expert',              when: 'Yesterday',   color: 'var(--yellow)' },
+      { icon: '👥', text: 'Joined Delhi React Developers group',          when: '2 days ago',  color: 'var(--violet)' },
+    ];
+
+    function handleChallengeComplete() {
+      if (challengeDone) return;
+      setChallengeDone(true);
+      setXp(prev => prev + 150);
+      showToast({
+        icon: '🎯',
+        title: 'Challenge Complete!',
+        subtitle: 'Linked list reversed in O(1) space',
+        xpGain: '+150 XP',
+        color: 'var(--orange-light)',
+      });
+    }
+
+    return (
+      <div className="fade-in" style={{ maxWidth: 1400, margin: '70px auto 60px', padding: '0 24px', position: 'relative', zIndex: 1 }}>
+
+        {/* Hero */}
+        <div className="hero-section">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 28, flexWrap: 'wrap' }}>
+            <div style={{ maxWidth: 540 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14, flexWrap: 'wrap' }}>
+                <span className="tag tag-teal" style={{ animation: 'none' }}>Live</span>
+                <span style={{ fontFamily: 'var(--font-devanagari)', fontSize: 12.5, color: 'var(--text-muted)' }}>
+                  Namaste Sanjay, आपका स्वागत है
+                </span>
+              </div>
+
+              <h1 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 800, letterSpacing: '-0.03em', marginBottom: 12, lineHeight: 1.08 }}>
+                Ready to build<br />
+                <span className="text-gradient-orange">something great?</span>
+              </h1>
+
+              <p style={{ color: 'var(--text-muted)', fontSize: 15, marginBottom: 24, lineHeight: 1.7, maxWidth: 440 }}>
+                Continue <strong style={{ color: 'var(--teal-light)' }}>AWS Lambda Functions</strong> — you are 67% through Full Stack Dev. Your AI mentor is online.
+              </p>
+
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                <button className="btn btn-orange" onClick={() => setCurrentPage('mentor')}>Ask AI Mentor</button>
+                <button className="btn btn-teal"   onClick={() => setCurrentPage('learn')}>Continue Learning</button>
+                <button className="btn btn-outline" onClick={() => setCurrentPage('review')}>Review Code</button>
+              </div>
+            </div>
+
+            {/* Daily challenge */}
+            <div className="challenge-card">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+                <span className="tag tag-orange">Daily Challenge</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--yellow)', fontWeight: 600 }}>+150 XP</span>
+              </div>
+
+              <p style={{ fontWeight: 700, fontSize: 14.5, lineHeight: 1.45, marginBottom: 10 }}>
+                Reverse a linked list with no extra memory
+              </p>
+
+              <div style={{ display: 'flex', gap: 6, marginBottom: 16, flexWrap: 'wrap' }}>
+                <span className="tag tag-yellow">Medium</span>
+                <span className="tag tag-muted">DSA</span>
+                <span className="tag tag-muted">Pointers</span>
+              </div>
+
+              <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 16 }}>
+                <span className="timer-digit">{hours}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', fontSize: 14 }}>:</span>
+                <span className="timer-digit">{minutes}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', fontSize: 14 }}>:</span>
+                <span className="timer-digit">{seconds}</span>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--text-faint)' }}>ENDS IN</span>
+                <button
+                  className="btn btn-orange btn-sm"
+                  disabled={challengeDone}
+                  style={{ opacity: challengeDone ? 0.5 : 1 }}
+                  onClick={handleChallengeComplete}
+                >
+                  {challengeDone ? 'Solved!' : 'Solve Now'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div className="stat-grid">
+          {stats.map((s, i) => (
+            <div key={i} className="stat-card">
+              <div style={{ fontSize: 26, marginBottom: 9, display: 'inline-block' }}>{s.icon}</div>
+              <div style={{ fontSize: 44, fontWeight: 800, color: s.color, lineHeight: 1, letterSpacing: '-0.03em' }}>{s.value}</div>
+              <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 6, fontWeight: 500 }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Main grid */}
+        <div className="main-grid">
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+              <h2 style={{ fontSize: 18, fontWeight: 700, letterSpacing: '-0.02em' }}>Your Learning Paths</h2>
+              <button className="btn-ghost btn-sm" onClick={() => setCurrentPage('learn')}>See all</button>
+            </div>
+
+            <div className="path-grid" style={{ marginBottom: 20 }}>
+              {LEARNING_PATHS.map((path) => {
+                const pct = Math.round(path.xp / path.totalXp * 100);
+                return (
+                  <div
+                    key={path.id}
+                    className="path-card"
+                    style={{ borderColor: `${path.color}20` }}
+                    onClick={() => setCurrentPage('learn')}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.boxShadow = `0 18px 44px ${path.color}18, 0 0 0 1px ${path.color}28`;
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.boxShadow = '';
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
+                      <span style={{ fontSize: 24 }}>{path.emoji}</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: path.color }}>{path.done}/{path.total}</span>
+                    </div>
+                    <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 3, lineHeight: 1.3 }}>{path.title}</div>
+                    <div style={{ fontSize: 11.5, color: 'var(--text-faint)', marginBottom: 12 }}>{path.subtitle}</div>
+                    <div className="progress-track" style={{ marginBottom: 6 }}>
+                      <div className="progress-fill" style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${path.color}, ${path.color}88)` }} />
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: 9.5, color: 'var(--text-faint)' }}>
+                      <span>{path.xp.toLocaleString()} XP</span>
+                      <span style={{ color: path.color, fontWeight: 700 }}>{pct}%</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Leaderboard */}
+            <div className="card">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                <h3 style={{ fontSize: 15, fontWeight: 700 }}>Leaderboard</h3>
+                <span className="tag tag-orange">This Week</span>
+              </div>
+              {LEADERBOARD_DATA.map(person => {
+                const medals = ['🥇', '🥈', '🥉'];
+                return (
+                  <div
+                    key={person.rank}
+                    className="lb-row"
+                    style={{
+                      background: person.isYou ? 'rgba(20,184,166,0.06)' : undefined,
+                      border: person.isYou ? '1px solid rgba(20,184,166,0.15)' : '1px solid transparent',
+                    }}
+                  >
+                    <div style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 13,
+                      fontWeight: 700,
+                      color: person.rank <= 3 ? ['#fbbf24', '#9ca3af', '#cd7c32'][person.rank - 1] : 'var(--text-faint)',
+                      width: 24,
+                      textAlign: 'center',
+                      flexShrink: 0,
+                    }}>
+                      {person.rank <= 3 ? medals[person.rank - 1] : `#${person.rank}`}
+                    </div>
+                    <div style={{
+                      width: 30, height: 30, borderRadius: 8,
+                      background: person.color,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      color: '#fff', fontSize: 12, fontWeight: 800, flexShrink: 0,
+                    }}>
+                      {person.initials}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: person.isYou ? 'var(--teal-light)' : 'var(--text)' }}>
+                        {person.name}{person.isYou ? ' (you)' : ''}
+                      </div>
+                      <div style={{ fontSize: 10, color: 'var(--text-faint)' }}>{person.city}</div>
+                    </div>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--orange-light)', fontWeight: 700 }}>
+                      {person.xp.toLocaleString()}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Right column */}
+          <div className="right-col">
+            {/* Level */}
+            <div className="level-card">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 11 }}>
+                <div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 8.5, color: 'var(--text-faint)', letterSpacing: '0.1em', marginBottom: 4 }}>
+                    CURRENT LEVEL
+                  </div>
+                  <div style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.02em' }} className="text-gradient-teal">
+                    Level 7 &mdash; Builder
+                  </div>
+                </div>
+                <div style={{ fontSize: 32 }}>🏗</div>
+              </div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--text-faint)', marginBottom: 7 }}>
+                {xp.toLocaleString()} / 8,000 XP to Level 8
+              </div>
+              <div className="xp-track">
+                <div className="xp-fill" style={{ width: `${Math.min(100, Math.round(xp / 8000 * 100))}%` }} />
+              </div>
+            </div>
+
+            {/* Achievements */}
+            <div className="card">
+              <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 14 }}>Achievements</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+                {ACHIEVEMENTS.map((a, i) => (
+                  <div
+                    key={i}
+                    className="achievement-item"
+                    style={{
+                      background: a.earned ? 'rgba(249,115,22,0.07)' : 'var(--surface-2)',
+                      border: `1px solid ${a.earned ? 'rgba(249,115,22,0.2)' : 'var(--border)'}`,
+                      opacity: a.earned ? 1 : 0.45,
+                    }}
+                  >
+                    <div style={{ fontSize: 20, marginBottom: 4 }}>{a.emoji}</div>
+                    <div style={{ fontSize: 9.5, fontWeight: 700, color: a.earned ? 'var(--orange-light)' : 'var(--text-muted)', lineHeight: 1.3 }}>
+                      {a.title}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Recent activity */}
+            <div className="card" style={{ flex: 1 }}>
+              <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 13 }}>Recent Activity</h3>
+              {recentActivity.map((item, i) => (
+                <div key={i} className="activity-row">
+                  <div style={{
+                    width: 30, height: 30, borderRadius: 8,
+                    background: 'var(--surface-2)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 14, flexShrink: 0,
+                    border: `1px solid ${item.color}20`,
+                  }}>
+                    {item.icon}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 12.5, color: 'var(--text)', fontWeight: 500, lineHeight: 1.4 }}>{item.text}</div>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9.5, color: 'var(--text-faint)', marginTop: 2 }}>{item.when}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Quick actions */}
+            <div className="card" style={{ padding: '16px 0', overflow: 'hidden' }}>
+              <h3 style={{ fontSize: 14, fontWeight: 700, padding: '0 16px', marginBottom: 10 }}>Quick Actions</h3>
+              {[
+                { icon: '💬', label: 'Mock interview practice', page: 'career',    badge: 'HOT',  badgeClass: 'tag-red'   },
+                { icon: '👥', label: 'Find a study partner',    page: 'community', badge: '',     badgeClass: ''          },
+                { icon: '📄', label: 'Build my resume',         page: 'career',    badge: '',     badgeClass: ''          },
+                { icon: '🎯', label: 'Take daily challenge',    page: 'review',    badge: 'NEW',  badgeClass: 'tag-teal'  },
+              ].map((action, i) => (
+                <button key={i} className="quick-action" onClick={() => setCurrentPage(action.page)}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    {action.icon} {action.label}
+                  </span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+                    {action.badge && <span className={`tag ${action.badgeClass}`} style={{ fontSize: 8.5, padding: '2px 7px' }}>{action.badge}</span>}
+                    <span style={{ color: 'var(--text-faint)', fontSize: 12 }}>→</span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ----- AI Mentor page -----
+  function MentorPage({ lang, showToast }) {
+    const langInfo = LANGUAGES.find(l => l.code === lang) || LANGUAGES[0];
+
+    const [messages, setMessages] = useState([{
+      role: 'assistant',
+      text: 'Namaste! I am DevMentor, your AI coding companion built for Indian developers.\n\nAsk me anything in English or your preferred Indian language: code questions, debugging, interview prep, or career advice.\n\nI will explain things using examples from Zomato, Razorpay, UPI, Flipkart — the real Indian tech world.\n\nWhat are you working on?',
+    }]);
+
+    const [input, setInput] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [bharatMode, setBharatMode] = useState(false);
+    const [voiceActive, setVoiceActive] = useState(false);
+    const messagesEndRef = useRef(null);
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages, loading]);
+
+    const suggestedQuestions = [
+      'Explain closures using a chai stall analogy',
+      'How does UPI work under the hood?',
+      'Debug my React useEffect issue',
+      'Best AWS services for a fintech startup?',
+      'Prep me for a Razorpay interview',
+      'Explain async and await in Hindi',
+      'System design for Swiggy at scale',
+      'Kotlin vs Flutter for my startup',
+    ];
+
+    async function sendMessage() {
+      if (!input.trim() || loading) return;
+
+      const userText = input.trim();
+      setInput('');
+
+      const newMessages = [...messages, { role: 'user', text: userText }];
+      setMessages(newMessages);
+      setLoading(true);
+
+      const history = newMessages.map(m => ({ role: m.role, content: m.text }));
+
+      const systemPrompt = `You are DevMentor, an expert coding mentor for Indian software developers.
+
+Personality: You are like a brilliant senior engineer at a top Indian startup — warm, direct, practical, and genuinely invested in helping the learner grow. You are not a chatbot. You are a mentor.
+
+${bharatMode ? 'IMPORTANT: The user has enabled Bharat Mode. Use more Hindi phrases and words naturally mixed with English throughout your responses. For example, "Yaar, iska matlab ye hai ki..." or "Bahut achha question hai, lekin..." Keep technical terms in English.' : ''}
+
+Guidelines:
+- If the user writes in Hindi or any Indian language, reply naturally in that same language, mixing in English technical terms where appropriate.
+- Use India-relevant examples: Flipkart catalog, Razorpay checkout flow, Zomato order tracking, UPI transactions, Aadhaar verification, IRCTC booking — wherever it fits.
+- Explain WHY something works, not just WHAT it is. Create the "aha moment."
+- For short questions, respond in prose. For complex topics, use clear structure with headings.
+- Show concise, runnable code snippets. Only include the important parts.
+- Never start with hollow filler phrases. Get to the point immediately.
+- End with a practical next step or a follow-up question.
+- Current language preference: ${langInfo.label} (${langInfo.native})`;
+
+      const reply = await callClaude(systemPrompt, history);
+
+      setMessages(prev => [...prev, { role: 'assistant', text: reply }]);
+      showToast({ icon: '✨', title: 'XP Earned', subtitle: 'Learning session', xpGain: '+18 XP', color: 'var(--teal-light)' });
+      setLoading(false);
+    }
+
+    function handleKeyDown(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    }
+
+    function renderMarkdown(text) {
+      return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--teal-light)">$1</strong>')
+        .replace(/`([^`]+)`/g, '<code style="font-family:var(--font-mono);font-size:11px;background:rgba(20,184,166,0.1);padding:2px 6px;border-radius:4px;color:var(--teal-light)">$1</code>')
+        .replace(/\n/g, '<br>');
+    }
+
+    function toggleVoice() {
+      const next = !voiceActive;
+      setVoiceActive(next);
+      showToast({
+        icon: next ? '🎤' : '🔇',
+        title: next ? 'Voice mode on' : 'Voice mode off',
+        subtitle: next ? 'Speak your question' : 'Back to typing',
+      });
+    }
+
+    return (
+      <div style={{ display: 'flex', height: 'calc(100vh - 58px)', marginTop: 58, position: 'relative', zIndex: 1 }}>
+        {/* Sidebar */}
+        <div style={{
+          width: 248,
+          borderRight: '1px solid var(--border)',
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '16px 12px',
+          background: 'rgba(8,8,16,0.7)',
+          overflowY: 'auto',
+          flexShrink: 0,
+        }}>
+          {/* Mentor info */}
+          <div style={{
+            background: 'rgba(20,184,166,0.07)',
+            border: '1px solid rgba(20,184,166,0.18)',
+            borderRadius: 12,
+            padding: 14,
+            marginBottom: 18,
+          }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 8, color: 'var(--teal)', letterSpacing: '0.12em', marginBottom: 5, fontWeight: 700 }}>
+              YOUR AI MENTOR
+            </div>
+            <div style={{ fontWeight: 700, fontSize: 14.5, marginBottom: 6 }}>DevMentor AI</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12 }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--teal)', boxShadow: '0 0 6px var(--teal)' }} />
+              <span style={{ fontSize: 11, color: 'var(--teal)', fontFamily: 'var(--font-mono)' }}>Online</span>
+            </div>
+
+            {/* Bharat mode toggle */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--orange-light)' }}>Bharat Mode</div>
+                <div style={{ fontSize: 9.5, color: 'var(--text-faint)' }}>Mix Hindi in replies</div>
+              </div>
+              <button
+                onClick={() => setBharatMode(v => !v)}
+                style={{
+                  background: bharatMode ? 'var(--orange)' : 'var(--surface-4)',
+                  border: `1px solid ${bharatMode ? 'rgba(249,115,22,0.4)' : 'var(--border-strong)'}`,
+                }}
+                className="toggle-switch"
+              >
+                <div className="toggle-knob" style={{ left: bharatMode ? 18 : 3 }} />
+              </button>
+            </div>
+          </div>
+
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 8, color: 'var(--text-faint)', letterSpacing: '0.12em', marginBottom: 8, fontWeight: 700 }}>
+            TRY ASKING
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {suggestedQuestions.map((q, i) => (
+              <button
+                key={i}
+                onClick={() => { setInput(q); inputRef.current?.focus(); }}
+                style={{
+                  background: 'none',
+                  border: '1px solid var(--border)',
+                  borderRadius: 8,
+                  padding: '7px 10px',
+                  fontSize: 11,
+                  color: 'var(--text-muted)',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  lineHeight: 1.5,
+                  transition: 'all 0.12s',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor = 'rgba(20,184,166,0.4)';
+                  e.currentTarget.style.background = 'rgba(20,184,166,0.05)';
+                  e.currentTarget.style.color = 'var(--text)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = 'var(--border)';
+                  e.currentTarget.style.background = 'none';
+                  e.currentTarget.style.color = 'var(--text-muted)';
+                }}
+              >
+                {q}
+              </button>
+            ))}
+          </div>
+
+          <div style={{ flex: 1 }} />
+
+          <div style={{ padding: 10, background: 'var(--surface-2)', borderRadius: 9, border: '1px solid var(--border)', marginTop: 12 }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 8, color: 'var(--text-faint)', marginBottom: 4, letterSpacing: '0.12em', fontWeight: 700 }}>
+              LANGUAGE
+            </div>
+            <div style={{
+              fontSize: 14,
+              fontFamily: lang !== 'en' ? 'var(--font-devanagari)' : 'var(--font-ui)',
+              color: 'var(--text)',
+              fontWeight: 600,
+            }}>
+              {langInfo.native}
+            </div>
+          </div>
+        </div>
+
+        {/* Chat area */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+          {/* Chat header */}
+          <div style={{
+            padding: '10px 20px',
+            borderBottom: '1px solid var(--border)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            background: 'rgba(8,8,16,0.65)',
+            backdropFilter: 'blur(14px)',
+            flexShrink: 0,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
+              <div style={{
+                width: 38, height: 38, borderRadius: '50%',
+                background: 'linear-gradient(135deg, var(--teal), var(--violet))',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 17, boxShadow: '0 0 14px rgba(20,184,166,0.35)',
+              }}>🤖</div>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: 14 }}>DevMentor AI</div>
+                <div style={{ fontSize: 10.5, color: 'var(--teal)', fontFamily: 'var(--font-mono)' }}>
+                  Multilingual — India-first — Powered by Claude
+                </div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: 7, alignItems: 'center' }}>
+              <span className="tag tag-teal">10 Languages</span>
+              {bharatMode && <span className="tag tag-orange">Bharat Mode</span>}
+              <button className={`voice-btn ${voiceActive ? 'recording' : ''}`} onClick={toggleVoice} title="Toggle voice mode">
+                {voiceActive ? '🔴' : '🎤'}
+              </button>
+            </div>
+          </div>
+
+          {/* Messages */}
+          <div style={{ flex: 1, overflowY: 'auto', padding: '20px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+            {messages.map((msg, i) => (
+              <div
+                key={i}
+                style={{
+                  display: 'flex',
+                  gap: 9,
+                  alignItems: 'flex-end',
+                  flexDirection: msg.role === 'user' ? 'row-reverse' : 'row',
+                  animation: 'pageFadeIn 0.3s ease both',
+                  animationDelay: `${i * 0.02}s`,
+                }}
+              >
+                <div style={{
+                  width: 26, height: 26, borderRadius: '50%', flexShrink: 0,
+                  background: msg.role === 'user'
+                    ? 'linear-gradient(135deg, var(--orange), #c2410c)'
+                    : 'linear-gradient(135deg, var(--teal), var(--violet))',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 11,
+                }}>
+                  {msg.role === 'user' ? 'S' : '🤖'}
+                </div>
+                <div
+                  className={msg.role === 'user' ? 'bubble-user' : 'bubble-ai'}
+                  dangerouslySetInnerHTML={{ __html: renderMarkdown(msg.text) }}
+                />
+              </div>
+            ))}
+
+            {loading && (
+              <div style={{ display: 'flex', gap: 9, alignItems: 'flex-end' }}>
+                <div style={{
+                  width: 26, height: 26, borderRadius: '50%',
+                  background: 'linear-gradient(135deg, var(--teal), var(--violet))',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 11,
+                }}>🤖</div>
+                <div className="bubble-ai">
+                  <div className="loader-dots"><span /><span /><span /></div>
+                </div>
+              </div>
+            )}
+
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input area */}
+          <div style={{
+            padding: '12px 20px',
+            borderTop: '1px solid var(--border)',
+            display: 'flex',
+            gap: 10,
+            background: 'rgba(8,8,16,0.65)',
+            backdropFilter: 'blur(14px)',
+            flexShrink: 0,
+          }}>
+            <textarea
+              ref={inputRef}
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder={voiceActive ? 'Voice mode active — speak your question...' : 'Ask in English or your language (Shift+Enter for a new line)'}
+              style={{
+                flex: 1,
+                padding: '10px 14px',
+                resize: 'none',
+                height: 48,
+                lineHeight: 1.55,
+                fontSize: 13.5,
+                borderRadius: 10,
+              }}
+            />
+            <button
+              className="btn btn-orange"
+              onClick={sendMessage}
+              disabled={loading || !input.trim()}
+              style={{ opacity: loading || !input.trim() ? 0.45 : 1, alignSelf: 'flex-end', height: 48, borderRadius: 10 }}
+            >
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ----- Code Review page -----
+  function CodeReviewPage({ showToast }) {
+    const [code, setCode] = useState(SAMPLE_CODE);
+    const [language, setLanguage] = useState('python');
+    const [reviewOutput, setReviewOutput] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [activeTab, setActiveTab] = useState('review');
+    const [securityMode, setSecurityMode] = useState(false);
+
+    const scoreData = [
+      { label: 'Code Quality',   score: 72, color: 'var(--teal)' },
+      { label: 'Security',       score: 45, color: 'var(--red)'  },
+      { label: 'Error Handling', score: 38, color: 'var(--red)'  },
+      { label: 'Performance',    score: 68, color: 'var(--yellow)' },
+      { label: 'Documentation',  score: 30, color: 'var(--orange-light)' },
+    ];
+
+    async function runReview() {
+      if (!code.trim() || loading) return;
+      setLoading(true);
+      setActiveTab('review');
+      setReviewOutput('');
+
+      const result = await callClaude(
+        `You are a senior software engineer doing a thorough code review for an Indian developer. Be direct, honest, and educational.
+
+${securityMode ? 'SECURITY AUDIT MODE: Focus heavily on security vulnerabilities, especially around payment integrations, UPI flows, data exposure, and injection attacks.' : ''}
+
+Structure your review with these headings:
+## Summary
+## What Works Well
+## Critical Issues
+## Security Concerns
+## Suggested Improvements
+## Rewritten Version
+## What to Study Next
+
+Cover: bugs, security issues (especially for payment and fintech code), error handling, performance for Indian network conditions (2G/3G), and language best practices.
+Show a clean rewritten version. Be direct and honest, not sycophantic.`,
+        [{ role: 'user', content: `Review this ${language} code:\n\`\`\`${language}\n${code}\n\`\`\`` }]
+      );
+
+      setReviewOutput(result);
+      showToast({ icon: '🔍', title: 'Review done!', subtitle: 'Code analysed', xpGain: '+80 XP', color: 'var(--teal-light)' });
+      setLoading(false);
+    }
+
+    function renderReview(text) {
+      return text
+        .replace(/^## (.+)$/gm, '<h3 style="font-size:16px;font-weight:700;margin:22px 0 10px;color:var(--text)">$1</h3>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/`([^`\n]+)`/g, '<code style="font-family:var(--font-mono);font-size:11px;background:rgba(20,184,166,0.1);padding:2px 6px;border-radius:4px;color:var(--teal-light)">$1</code>')
+        .replace(/```[\w]*\n?([\s\S]*?)```/g, (_, c) => `<pre style="background:#06060e;border:1px solid var(--border);border-radius:10px;padding:16px;font-family:var(--font-mono);font-size:12px;line-height:1.85;overflow-x:auto;margin:14px 0;color:#9effd8"><code>${c.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`)
+        .replace(/\n\n/g, '<br><br>')
+        .replace(/\n/g, '<br>');
+    }
+
+    return (
+      <div className="fade-in" style={{ maxWidth: 1400, margin: '70px auto 60px', padding: '0 24px', position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 14 }}>
+          <div>
+            <h1 style={{ fontSize: 36, fontWeight: 800, letterSpacing: '-0.03em', marginBottom: 5 }}>
+              AI <span className="text-gradient-teal">Code Review</span>
+            </h1>
+            <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>Paste your code, get expert feedback, earn +80 XP per review</p>
+          </div>
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+            <div
+              style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                padding: '7px 12px',
+                background: securityMode ? 'rgba(239,68,68,0.08)' : 'var(--surface-2)',
+                border: `1px solid ${securityMode ? 'rgba(239,68,68,0.25)' : 'var(--border-strong)'}`,
+                borderRadius: 8, cursor: 'pointer',
+              }}
+              onClick={() => setSecurityMode(v => !v)}
+            >
+              <span style={{ fontSize: 13 }}>🔒</span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: securityMode ? '#f87171' : 'var(--text-muted)' }}>Security Audit</span>
+              <button
+                style={{ background: securityMode ? 'var(--red)' : 'var(--surface-4)', border: 'none' }}
+                className="toggle-switch"
+              >
+                <div className="toggle-knob" style={{ left: securityMode ? 18 : 3 }} />
+              </button>
+            </div>
+
+            <select
+              value={language}
+              onChange={e => setLanguage(e.target.value)}
+              style={{ padding: '9px 13px', fontSize: 12.5, cursor: 'pointer', borderRadius: 8, minWidth: 120 }}
+            >
+              {['python', 'javascript', 'typescript', 'java', 'kotlin', 'go', 'rust', 'c++'].map(l => (
+                <option key={l} value={l}>{l}</option>
+              ))}
+            </select>
+
+            <button
+              className="btn btn-orange"
+              onClick={runReview}
+              disabled={loading}
+              style={{ opacity: loading ? 0.6 : 1 }}
+            >
+              {loading ? 'Analysing...' : 'Review Code'}
+            </button>
+          </div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, minHeight: 580 }}>
+          {/* Editor pane */}
+          <div style={{ display: 'flex', flexDirection: 'column', borderRadius: 12, overflow: 'hidden', border: '1px solid var(--border)' }}>
+            <div style={{
+              background: '#06060e', padding: '10px 14px',
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+              borderBottom: '1px solid var(--border)',
+            }}>
+              <div style={{ display: 'flex', gap: 5 }}>
+                {['#ff5f57', '#ffbd2e', '#28ca41'].map((c, i) => (
+                  <div key={i} style={{ width: 10, height: 10, borderRadius: '50%', background: c }} />
+                ))}
+              </div>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--text-faint)' }}>
+                code.{language}
+              </span>
+              <span className="tag tag-muted" style={{ fontSize: 8 }}>editable</span>
+            </div>
+            <textarea
+              value={code}
+              onChange={e => setCode(e.target.value)}
+              className="code-editor"
+              style={{ flex: 1, minHeight: 540, borderRadius: 0, border: 'none', resize: 'none' }}
+            />
+          </div>
+
+          {/* Output pane */}
+          <div className="card" style={{ display: 'flex', flexDirection: 'column', padding: 0, overflow: 'hidden' }}>
+            <div className="tab-bar">
+              {['review', 'scores'].map(tab => (
+                <button
+                  key={tab}
+                  className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
+                  onClick={() => setActiveTab(tab)}
+                  style={{ textTransform: 'capitalize' }}
+                >
+                  {tab}
+                </button>
+              ))}
+              {securityMode && (
+                <span className="tag tag-red" style={{ margin: 'auto 12px auto auto', fontSize: 8 }}>Security Mode</span>
+              )}
+            </div>
+
+            <div style={{ flex: 1, overflowY: 'auto', padding: '18px 20px' }}>
+              {activeTab === 'review' && (
+                loading ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 300, gap: 18 }}>
+                    <div className="spinner" style={{ width: 42, height: 42 }} />
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11.5, color: 'var(--text-faint)' }}>Reading your code...</div>
+                  </div>
+                ) : reviewOutput ? (
+                  <div style={{ fontSize: 13.5, lineHeight: 1.8 }} dangerouslySetInnerHTML={{ __html: renderReview(reviewOutput) }} />
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 300, gap: 12, textAlign: 'center' }}>
+                    <div style={{ fontSize: 48 }}>🔍</div>
+                    <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-muted)' }}>No review yet</p>
+                    <p style={{ fontSize: 13, color: 'var(--text-faint)', maxWidth: 200 }}>Click Review Code for instant expert feedback.</p>
+                  </div>
+                )
+              )}
+
+              {activeTab === 'scores' && (
+                <div style={{ paddingTop: 8 }}>
+                  <p style={{ fontSize: 12.5, color: 'var(--text-faint)', marginBottom: 20 }}>
+                    {reviewOutput ? 'Estimated scores based on the review above.' : 'Run a review first to see scores.'}
+                  </p>
+                  {scoreData.map((item, i) => (
+                    <div key={i} style={{ marginBottom: 18 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                        <span style={{ fontSize: 13, fontWeight: 600 }}>{item.label}</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: item.color, fontWeight: 700 }}>
+                          {reviewOutput ? `${item.score}/100` : '--/100'}
+                        </span>
+                      </div>
+                      <div className="progress-track">
+                        <div
+                          className="progress-fill"
+                          style={{
+                            width: reviewOutput ? `${item.score}%` : '0%',
+                            background: item.color,
+                            boxShadow: `0 0 8px ${item.color}44`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ----- Learn page — W3Schools-style full tutorial experience -----
+
+  // Structured curriculum — each topic has subtopics with titles
+  const CURRICULUM = {
+    fullstack: [
+      {
+        section: 'HTML and CSS',
+        color: '#e34c26',
+        lessons: [
+          { id: 'html-basics',        title: 'HTML Basics',              desc: 'Structure of a webpage' },
+          { id: 'html-elements',      title: 'HTML Elements and Tags',   desc: 'All common tags explained' },
+          { id: 'html-forms',         title: 'HTML Forms',               desc: 'Inputs, buttons, validation' },
+          { id: 'css-selectors',      title: 'CSS Selectors',            desc: 'Target elements precisely' },
+          { id: 'css-box-model',      title: 'CSS Box Model',            desc: 'Margin, padding, border' },
+          { id: 'css-flexbox',        title: 'CSS Flexbox',              desc: 'Build layouts easily' },
+          { id: 'css-grid',           title: 'CSS Grid',                 desc: 'Two-dimensional layouts' },
+          { id: 'css-responsive',     title: 'Responsive Design',        desc: 'Mobile-first with media queries' },
+        ],
+      },
+      {
+        section: 'JavaScript',
+        color: '#f7df1e',
+        lessons: [
+          { id: 'js-variables',       title: 'Variables and Data Types', desc: 'let, const, var' },
+          { id: 'js-functions',       title: 'Functions',                desc: 'Arrow functions, closures' },
+          { id: 'js-arrays',          title: 'Arrays and Objects',       desc: 'map, filter, reduce' },
+          { id: 'js-async',           title: 'Async and Await',          desc: 'Promises, fetch, API calls' },
+          { id: 'js-dom',             title: 'DOM Manipulation',         desc: 'Select and change elements' },
+          { id: 'js-events',          title: 'Events',                   desc: 'Click, input, keyboard events' },
+          { id: 'js-es6',             title: 'ES6+ Features',            desc: 'Destructuring, spread, modules' },
+          { id: 'js-error',           title: 'Error Handling',           desc: 'try/catch, custom errors' },
+        ],
+      },
+      {
+        section: 'React',
+        color: '#61dafb',
+        lessons: [
+          { id: 'react-intro',        title: 'What is React?',           desc: 'Components and virtual DOM' },
+          { id: 'react-jsx',          title: 'JSX',                      desc: 'HTML inside JavaScript' },
+          { id: 'react-props',        title: 'Props',                    desc: 'Passing data to components' },
+          { id: 'react-state',        title: 'State with useState',      desc: 'Reactive data in components' },
+          { id: 'react-useeffect',    title: 'useEffect Hook',           desc: 'Side effects and lifecycle' },
+          { id: 'react-forms',        title: 'Forms in React',           desc: 'Controlled inputs' },
+          { id: 'react-router',       title: 'React Router',             desc: 'Client-side navigation' },
+          { id: 'react-context',      title: 'Context API',              desc: 'Global state without Redux' },
+        ],
+      },
+      {
+        section: 'Node.js and Backend',
+        color: '#68a063',
+        lessons: [
+          { id: 'node-intro',         title: 'Introduction to Node.js',  desc: 'Server-side JavaScript' },
+          { id: 'node-express',       title: 'Express.js',               desc: 'Build REST APIs fast' },
+          { id: 'node-middleware',    title: 'Middleware',               desc: 'Request/response pipeline' },
+          { id: 'node-mongodb',       title: 'MongoDB with Mongoose',    desc: 'NoSQL database basics' },
+          { id: 'node-auth',          title: 'Authentication with JWT',  desc: 'Secure routes and tokens' },
+          { id: 'node-razorpay',      title: 'Razorpay Integration',     desc: 'UPI and payment flows' },
+          { id: 'node-deployment',    title: 'Deploy on AWS EC2',        desc: 'Go live in production' },
+          { id: 'node-env',           title: 'Environment Variables',    desc: 'Secrets and config management' },
+        ],
+      },
+    ],
+    aiml: [
+      {
+        section: 'Python for Data',
+        color: '#3776ab',
+        lessons: [
+          { id: 'py-basics',          title: 'Python Basics',            desc: 'Syntax, types, loops' },
+          { id: 'py-functions',       title: 'Functions and Modules',    desc: 'Reusable Python code' },
+          { id: 'py-numpy',           title: 'NumPy Arrays',             desc: 'Fast numerical computing' },
+          { id: 'py-pandas',          title: 'Pandas DataFrames',        desc: 'Data manipulation at scale' },
+          { id: 'py-matplotlib',      title: 'Data Visualization',       desc: 'Charts and graphs' },
+          { id: 'py-cleaning',        title: 'Data Cleaning',            desc: 'Handle missing values' },
+          { id: 'py-fileio',          title: 'File I/O and CSV',         desc: 'Read and write data' },
+          { id: 'py-apis',            title: 'Calling APIs with Python', desc: 'requests library' },
+        ],
+      },
+      {
+        section: 'Machine Learning',
+        color: '#ff6f00',
+        lessons: [
+          { id: 'ml-intro',           title: 'What is ML?',              desc: 'Types of machine learning' },
+          { id: 'ml-linear',          title: 'Linear Regression',        desc: 'Predict continuous values' },
+          { id: 'ml-classification',  title: 'Classification',           desc: 'Logistic regression, trees' },
+          { id: 'ml-sklearn',         title: 'Scikit-learn',             desc: 'Train your first model' },
+          { id: 'ml-evaluation',      title: 'Model Evaluation',         desc: 'Accuracy, precision, recall' },
+          { id: 'ml-features',        title: 'Feature Engineering',      desc: 'Transform raw data' },
+          { id: 'ml-neural',          title: 'Neural Networks Basics',   desc: 'Layers, activation, backprop' },
+          { id: 'ml-tensorflow',      title: 'TensorFlow Intro',         desc: 'Build your first deep model' },
+        ],
+      },
+    ],
+    dsa: [
+      {
+        section: 'Arrays and Strings',
+        color: '#22c55e',
+        lessons: [
+          { id: 'dsa-arrays',         title: 'Arrays Introduction',      desc: 'Index, traversal, operations' },
+          { id: 'dsa-2d',             title: '2D Arrays and Matrix',     desc: 'Rows, columns, common problems' },
+          { id: 'dsa-strings',        title: 'Strings',                  desc: 'Immutability, common methods' },
+          { id: 'dsa-sliding',        title: 'Sliding Window',           desc: 'Subarray and substring problems' },
+          { id: 'dsa-twoptr',         title: 'Two Pointer Technique',    desc: 'Efficient pair-finding' },
+          { id: 'dsa-prefix',         title: 'Prefix Sum',               desc: 'Range query problems' },
+          { id: 'dsa-sorting',        title: 'Sorting Algorithms',       desc: 'Merge sort, quick sort' },
+          { id: 'dsa-binary',         title: 'Binary Search',            desc: 'Log n searching' },
+        ],
+      },
+      {
+        section: 'Data Structures',
+        color: '#8b5cf6',
+        lessons: [
+          { id: 'ds-linked',          title: 'Linked Lists',             desc: 'Nodes, pointers, reversal' },
+          { id: 'ds-stack',           title: 'Stacks and Queues',        desc: 'LIFO, FIFO applications' },
+          { id: 'ds-hash',            title: 'Hash Maps',                desc: 'O(1) lookup, collision' },
+          { id: 'ds-trees',           title: 'Binary Trees',             desc: 'Traversal, height, diameter' },
+          { id: 'ds-bst',             title: 'Binary Search Trees',      desc: 'Insert, delete, search' },
+          { id: 'ds-heap',            title: 'Heaps and Priority Queue', desc: 'Min heap, max heap' },
+          { id: 'ds-graphs',          title: 'Graphs',                   desc: 'BFS, DFS, adjacency list' },
+          { id: 'ds-trie',            title: 'Trie',                     desc: 'Prefix trees for strings' },
+        ],
+      },
+      {
+        section: 'Algorithms',
+        color: '#ef4444',
+        lessons: [
+          { id: 'algo-recursion',     title: 'Recursion',                desc: 'Base case, call stack' },
+          { id: 'algo-dp',            title: 'Dynamic Programming',      desc: 'Memoization, tabulation' },
+          { id: 'algo-greedy',        title: 'Greedy Algorithms',        desc: 'Local optimal choices' },
+          { id: 'algo-backtrack',     title: 'Backtracking',             desc: 'Explore all possibilities' },
+          { id: 'algo-divconq',       title: 'Divide and Conquer',       desc: 'Split, solve, combine' },
+          { id: 'algo-graph-adv',     title: 'Advanced Graph Algorithms',desc: 'Dijkstra, Bellman-Ford' },
+          { id: 'algo-sysdesign',     title: 'System Design Intro',      desc: 'Scalability, trade-offs' },
+          { id: 'algo-interview',     title: 'Interview Strategy',       desc: 'How to approach any problem' },
+        ],
+      },
+    ],
+  };
+
+  // Fill missing paths with auto-generated structure
+  ['cloud', 'android', 'startup'].forEach(id => {
+    if (!CURRICULUM[id]) {
+      CURRICULUM[id] = MODULE_TOPICS[id]
+        ? [{ section: LEARNING_PATHS.find(p => p.id === id)?.title || id, color: LEARNING_PATHS.find(p => p.id === id)?.color || '#14b8a6',
+            lessons: MODULE_TOPICS[id].map((title, i) => ({ id: `${id}-${i}`, title, desc: '' })) }]
+        : [];
+    }
+  });
+
+  function LearnPage({ showToast }) {
+    const [selectedPath, setSelectedPath]       = useState(null);
+    const [activeLessonId, setActiveLessonId]   = useState(null);
+    const [lessonData, setLessonData]           = useState({});   // cache: lessonId -> {content, quiz, code}
+    const [loading, setLoading]                 = useState(false);
+    const [completedSet, setCompletedSet]       = useState(new Set());
+    const [activeTab, setActiveTab]             = useState('learn'); // learn | practice | quiz
+    const [userCode, setUserCode]               = useState('');
+    const [codeOutput, setCodeOutput]           = useState('');
+    const [quizAnswer, setQuizAnswer]           = useState(null);
+    const [quizChecked, setQuizChecked]         = useState(false);
+    const contentRef = useRef(null);
+
+    // flat list of all lessons for prev/next nav
+    const allLessons = selectedPath
+      ? (CURRICULUM[selectedPath.id] || []).flatMap(section => section.lessons)
+      : [];
+
+    const currentIndex = allLessons.findIndex(l => l.id === activeLessonId);
+    const prevLesson   = currentIndex > 0  ? allLessons[currentIndex - 1] : null;
+    const nextLesson   = currentIndex >= 0 && currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
+
+    const activeLessonMeta = allLessons.find(l => l.id === activeLessonId);
+
+    async function openLesson(path, lesson) {
+      setActiveLessonId(lesson.id);
+      setActiveTab('learn');
+      setQuizAnswer(null);
+      setQuizChecked(false);
+      setCodeOutput('');
+      if (contentRef.current) contentRef.current.scrollTop = 0;
+
+      // already cached
+      if (lessonData[lesson.id]) {
+        setUserCode(lessonData[lesson.id].starterCode || '');
+        return;
+      }
+
+      setLoading(true);
+
+      const result = await callClaude(
+        `You are DevMentor — a coding teacher for Indian developers. You write lessons exactly like W3Schools: clear, structured, beginner-friendly, with plenty of working code examples.
+
+IMPORTANT: You must respond in this EXACT JSON format and nothing else:
+{
+  "title": "lesson title",
+  "introduction": "2-3 sentences explaining what this topic is and why it matters. Use a simple real-world analogy from India (chai, cricket, Zomato, UPI, IRCTC, etc.) to make it click.",
+  "sections": [
+    {
+      "heading": "section heading",
+      "body": "explanation paragraph. Keep it clear and simple. Use **bold** for key terms. Use backticks for inline code.",
+      "code": "complete, runnable code example with comments explaining each line. Use Indian context for variable names and data (e.g. customerName, upiId, orderAmount, productList). Leave blank string if no code needed for this section.",
+      "language": "javascript or python or html etc"
+    }
+  ],
+  "tryItYourself": {
+    "instruction": "A clear, specific task the learner should do. Start with: Try this: ...",
+    "starterCode": "code with // TODO comments showing exactly what to fill in",
+    "language": "javascript or python or html"
+  },
+  "quiz": {
+    "question": "a multiple choice question testing understanding of this lesson",
+    "options": ["option A", "option B", "option C", "option D"],
+    "correctIndex": 0,
+    "explanation": "why the correct answer is right, in 1-2 sentences"
+  },
+  "keyPoints": ["point 1", "point 2", "point 3"],
+  "whatNext": "one sentence pointing to the next natural topic to study"
+}
+
+Make code examples realistic and useful. Include 3-5 sections. Use Indian names, rupee amounts, Indian products in examples.`,
+        [{ role: 'user', content: `Generate a complete lesson on: "${lesson.title}" for the course: ${path.title}. The lesson description is: ${lesson.desc}` }]
+      );
+
+      let parsed = null;
+      try {
+        // Strip markdown fences and extract JSON object
+        let clean = result.replace(/```json\s*/gi, '').replace(/```\s*/gi, '').trim();
+        const jsonMatch = clean.match(/\{[\s\S]*\}/);
+        if (jsonMatch) clean = jsonMatch[0];
+        parsed = JSON.parse(clean);
+      } catch {
+        // Fallback: show content in readable form
+        parsed = {
+          title: lesson.title,
+          introduction: `Welcome to the lesson on ${lesson.title}. Let's dive in!`,
+          sections: [{ heading: 'Lesson Content', body: result.replace(/[{}"]/g, '').replace(/\\n/g, '\n'), code: '', language: 'javascript' }],
+          tryItYourself: { instruction: 'Try modifying the example above.', starterCode: '// Write your code here\n', language: 'javascript' },
+          quiz: { question: 'What did you learn in this lesson?', options: ['A concept', 'Nothing', 'Both', 'Neither'], correctIndex: 0, explanation: 'This lesson covered the fundamentals.' },
+          keyPoints: ['Read through the lesson carefully', 'Try the code examples', 'Complete the exercise'],
+          whatNext: 'Move on to the next lesson in the sidebar.',
+        };
+      }
+
+      const cached = { ...parsed, starterCode: parsed.tryItYourself?.starterCode || '' };
+      setLessonData(prev => ({ ...prev, [lesson.id]: cached }));
+      setUserCode(cached.starterCode);
+      setLoading(false);
+    }
+
+    function markDone() {
+      if (!activeLessonId) return;
+      if (completedSet.has(activeLessonId)) return;
+      setCompletedSet(prev => new Set([...prev, activeLessonId]));
+      showToast({ icon: '🎉', title: 'Lesson complete!', subtitle: activeLessonMeta?.title || '', xpGain: '+120 XP', color: selectedPath?.color || 'var(--teal)' });
+    }
+
+    function goToLesson(lesson) {
+      openLesson(selectedPath, lesson);
+    }
+
+    function renderBody(text) {
+      if (!text) return '';
+      return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--text);font-weight:700">$1</strong>')
+        .replace(/`([^`]+)`/g, '<code style="font-family:var(--font-mono);font-size:12px;background:rgba(20,184,166,0.12);padding:1px 6px;border-radius:4px;color:var(--teal-light)">$1</code>')
+        .replace(/\n/g, '<br>');
+    }
+
+    const lesson = activeLessonId ? lessonData[activeLessonId] : null;
+    const totalLessons = allLessons.length;
+    const doneCount = allLessons.filter(l => completedSet.has(l.id)).length;
+
+    // Path selection screen
+    if (!selectedPath) {
+      return (
+        <div className="fade-in" style={{ maxWidth: 1400, margin: '70px auto 60px', padding: '0 24px', position: 'relative', zIndex: 1 }}>
+          <div style={{ marginBottom: 32 }}>
+            <h1 style={{ fontSize: 36, fontWeight: 800, letterSpacing: '-0.03em', marginBottom: 8 }}>
+              <span className="text-gradient-orange">Learn to Code</span>
+            </h1>
+            <p style={{ color: 'var(--text-muted)', fontSize: 15, maxWidth: 560 }}>
+              Structured courses with theory, code examples, and hands-on practice. Built for Indian developers.
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 18 }}>
+            {LEARNING_PATHS.map(path => {
+              const curriculum = CURRICULUM[path.id] || [];
+              const totalCount = curriculum.reduce((n, s) => n + s.lessons.length, 0);
+              const pct = Math.round(path.xp / path.totalXp * 100);
+              return (
+                <div
+                  key={path.id}
+                  className="card"
+                  style={{ cursor: 'pointer', padding: 28, borderColor: `${path.color}22`, transition: 'all 0.2s' }}
+                  onClick={() => {
+                    setSelectedPath(path);
+                    const first = curriculum[0]?.lessons[0];
+                    if (first) openLesson(path, first);
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = `0 20px 48px ${path.color}20`; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 14 }}>
+                    <div style={{ fontSize: 40 }}>{path.emoji}</div>
+                    {path.done > 0 && <span className="tag tag-teal">In Progress</span>}
+                  </div>
+                  <div style={{ fontWeight: 800, fontSize: 19, marginBottom: 5, letterSpacing: '-0.02em', lineHeight: 1.25 }}>{path.title}</div>
+                  <div style={{ fontSize: 12.5, color: 'var(--text-faint)', marginBottom: 18 }}>{path.subtitle}</div>
+
+                  {/* Sections preview */}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 18 }}>
+                    {curriculum.slice(0, 3).map((sec, i) => (
+                      <span key={i} style={{ fontSize: 10.5, padding: '3px 9px', borderRadius: 6, background: `${sec.color}15`, color: sec.color, border: `1px solid ${sec.color}25`, fontWeight: 600 }}>
+                        {sec.section}
+                      </span>
+                    ))}
+                    {curriculum.length > 3 && (
+                      <span style={{ fontSize: 10.5, padding: '3px 9px', borderRadius: 6, background: 'var(--surface-3)', color: 'var(--text-faint)' }}>+{curriculum.length - 3} more</span>
+                    )}
+                  </div>
+
+                  <div className="progress-track" style={{ marginBottom: 8 }}>
+                    <div className="progress-fill" style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${path.color}, ${path.color}99)` }} />
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: 9.5, color: 'var(--text-faint)' }}>
+                    <span>{totalCount} lessons</span>
+                    <span style={{ color: path.color, fontWeight: 700 }}>{pct}% done</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    // Full tutorial layout
+    const curriculum = CURRICULUM[selectedPath.id] || [];
+
+    return (
+      <div style={{ display: 'flex', height: 'calc(100vh - 58px)', marginTop: 58, position: 'relative', zIndex: 1 }}>
+
+        {/* LEFT SIDEBAR — module list like W3Schools */}
+        <div style={{
+          width: 270,
+          borderRight: '1px solid var(--border)',
+          background: 'rgba(8,8,16,0.85)',
+          display: 'flex',
+          flexDirection: 'column',
+          overflowY: 'auto',
+          flexShrink: 0,
+        }}>
+          {/* Back + course header */}
+          <div style={{ padding: '14px 14px 10px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
+            <button
+              onClick={() => { setSelectedPath(null); setActiveLessonId(null); }}
+              style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: 12.5, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5, marginBottom: 12, padding: 0, fontFamily: 'var(--font-ui)' }}
+            >
+              &larr; All Courses
+            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 10 }}>
+              <span style={{ fontSize: 22 }}>{selectedPath.emoji}</span>
+              <div>
+                <div style={{ fontWeight: 800, fontSize: 14, lineHeight: 1.2 }}>{selectedPath.title}</div>
+                <div style={{ fontSize: 10.5, color: 'var(--text-faint)', marginTop: 2 }}>{totalLessons} lessons</div>
+              </div>
+            </div>
+            {/* Overall progress */}
+            <div style={{ marginBottom: 6 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--text-faint)' }}>{doneCount}/{totalLessons} complete</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: selectedPath.color, fontWeight: 700 }}>{totalLessons > 0 ? Math.round(doneCount / totalLessons * 100) : 0}%</span>
+              </div>
+              <div className="progress-track">
+                <div className="progress-fill" style={{ width: `${totalLessons > 0 ? Math.round(doneCount / totalLessons * 100) : 0}%`, background: selectedPath.color }} />
+              </div>
+            </div>
+          </div>
+
+          {/* Sections and lessons */}
+          <div style={{ flex: 1, overflowY: 'auto', padding: '8px 0' }}>
+            {curriculum.map((section, si) => (
+              <div key={si}>
+                {/* Section header */}
+                <div style={{
+                  padding: '10px 14px 6px',
+                  fontSize: 9.5,
+                  fontWeight: 700,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: section.color,
+                  fontFamily: 'var(--font-mono)',
+                }}>
+                  {section.section}
+                </div>
+                {/* Lessons */}
+                {section.lessons.map((lesson, li) => {
+                  const isActive = activeLessonId === lesson.id;
+                  const isDone   = completedSet.has(lesson.id);
+                  return (
+                    <button
+                      key={li}
+                      onClick={() => openLesson(selectedPath, lesson)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 9,
+                        width: '100%',
+                        padding: '8px 14px 8px 12px',
+                        background: isActive ? `${selectedPath.color}15` : 'none',
+                        border: 'none',
+                        borderLeft: `3px solid ${isActive ? selectedPath.color : 'transparent'}`,
+                        cursor: 'pointer',
+                        textAlign: 'left',
+                        transition: 'all 0.12s',
+                        fontFamily: 'var(--font-ui)',
+                      }}
+                      onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; }}
+                      onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'none'; }}
+                    >
+                      <div style={{
+                        width: 18, height: 18, borderRadius: '50%', flexShrink: 0,
+                        background: isDone ? selectedPath.color : isActive ? `${selectedPath.color}30` : 'var(--surface-3)',
+                        border: `1.5px solid ${isDone ? selectedPath.color : isActive ? selectedPath.color : 'var(--border-strong)'}`,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: 7, color: isDone ? '#080810' : selectedPath.color, fontWeight: 800,
+                      }}>
+                        {isDone ? '✓' : li + 1}
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: 12.5, fontWeight: isActive ? 700 : 500, color: isActive ? 'var(--text)' : isDone ? 'var(--text-muted)' : 'var(--text-faint)', lineHeight: 1.3, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {lesson.title}
+                        </div>
+                        {lesson.desc && (
+                          <div style={{ fontSize: 10, color: 'var(--text-faint)', marginTop: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{lesson.desc}</div>
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* MAIN CONTENT AREA */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden' }}>
+
+          {/* Top bar with tabs and nav */}
+          {activeLessonId && (
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '0 24px', height: 50,
+              borderBottom: '1px solid var(--border)',
+              background: 'rgba(8,8,16,0.8)',
+              backdropFilter: 'blur(12px)',
+              flexShrink: 0, gap: 16,
+            }}>
+              <div style={{ display: 'flex', gap: 4 }}>
+                {[
+                  { id: 'learn',    label: 'Learn'     },
+                  { id: 'practice', label: 'Try It Yourself' },
+                  { id: 'quiz',     label: 'Quiz'      },
+                ].map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    style={{
+                      background: activeTab === tab.id ? `${selectedPath.color}18` : 'none',
+                      border: activeTab === tab.id ? `1px solid ${selectedPath.color}35` : '1px solid transparent',
+                      borderRadius: 7,
+                      padding: '5px 14px',
+                      fontSize: 12.5,
+                      fontWeight: activeTab === tab.id ? 700 : 500,
+                      color: activeTab === tab.id ? selectedPath.color : 'var(--text-muted)',
+                      cursor: 'pointer',
+                      fontFamily: 'var(--font-ui)',
+                      transition: 'all 0.15s',
+                    }}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Prev / Next nav */}
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                {completedSet.has(activeLessonId)
+                  ? <span style={{ fontSize: 11.5, color: selectedPath.color, fontWeight: 700 }}>Completed</span>
+                  : <button className="btn btn-teal btn-sm" onClick={markDone}>Mark Complete +120 XP</button>
+                }
+                <button
+                  className="btn-ghost btn-sm"
+                  onClick={() => prevLesson && goToLesson(prevLesson)}
+                  disabled={!prevLesson}
+                  style={{ opacity: prevLesson ? 1 : 0.3 }}
+                >
+                  &larr; Prev
+                </button>
+                <button
+                  className="btn btn-sm"
+                  style={{ background: selectedPath.color, color: '#080810', fontWeight: 700, opacity: nextLesson ? 1 : 0.3 }}
+                  onClick={() => nextLesson && goToLesson(nextLesson)}
+                  disabled={!nextLesson}
+                >
+                  Next &rarr;
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Content */}
+          <div ref={contentRef} style={{ flex: 1, overflowY: 'auto', padding: '0 0 60px' }}>
+            {loading ? (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 400, gap: 20 }}>
+                <div className="spinner" style={{ width: 44, height: 44, borderTopColor: selectedPath.color }} />
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-faint)' }}>Loading lesson...</div>
+              </div>
+
+            ) : !activeLessonId ? (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '60vh', gap: 16, textAlign: 'center' }}>
+                <div style={{ fontSize: 56 }}>{selectedPath.emoji}</div>
+                <h2 style={{ fontSize: 24, fontWeight: 800, color: 'var(--text-muted)' }}>{selectedPath.title}</h2>
+                <p style={{ color: 'var(--text-faint)', fontSize: 14, maxWidth: 340 }}>Pick a lesson from the left to get started.</p>
+              </div>
+
+            ) : !lesson ? (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 400, gap: 20 }}>
+                <div className="spinner" style={{ width: 44, height: 44, borderTopColor: selectedPath.color }} />
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-faint)' }}>Generating lesson...</div>
+              </div>
+
+            ) : activeTab === 'learn' ? (
+              /* ---- LEARN TAB ---- */
+              <div style={{ maxWidth: 820, margin: '0 auto', padding: '32px 32px 0' }}>
+                {/* Breadcrumb */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 18, flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 12, color: 'var(--text-faint)' }}>{selectedPath.title}</span>
+                  <span style={{ color: 'var(--text-faint)', fontSize: 12 }}>/</span>
+                  <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{activeLessonMeta?.title}</span>
+                </div>
+
+                {/* Title */}
+                <h1 style={{ fontSize: 34, fontWeight: 800, letterSpacing: '-0.02em', marginBottom: 12, lineHeight: 1.15 }}>
+                  {lesson.title}
+                </h1>
+
+                {/* Introduction */}
+                <div style={{
+                  background: `${selectedPath.color}0d`,
+                  border: `1px solid ${selectedPath.color}22`,
+                  borderLeft: `4px solid ${selectedPath.color}`,
+                  borderRadius: '0 10px 10px 0',
+                  padding: '14px 18px',
+                  marginBottom: 30,
+                  fontSize: 15,
+                  color: 'var(--text-muted)',
+                  lineHeight: 1.7,
+                }}>
+                  {lesson.introduction}
+                </div>
+
+                {/* Sections */}
+                {(lesson.sections || []).map((sec, i) => (
+                  <div key={i} style={{ marginBottom: 36 }}>
+                    <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 12, letterSpacing: '-0.01em', color: 'var(--text)' }}>
+                      {sec.heading}
+                    </h2>
+                    <div
+                      style={{ fontSize: 14.5, lineHeight: 1.8, color: 'var(--text-muted)', marginBottom: sec.code ? 16 : 0 }}
+                      dangerouslySetInnerHTML={{ __html: renderBody(sec.body) }}
+                    />
+                    {sec.code && sec.code.trim() && (
+                      <div style={{ borderRadius: 10, overflow: 'hidden', border: '1px solid var(--border-strong)' }}>
+                        {/* Code block header */}
+                        <div style={{
+                          background: '#0c0c18',
+                          padding: '9px 16px',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          borderBottom: '1px solid var(--border)',
+                        }}>
+                          <div style={{ display: 'flex', gap: 5 }}>
+                            {['#ff5f57', '#ffbd2e', '#28ca41'].map((c, j) => (
+                              <div key={j} style={{ width: 10, height: 10, borderRadius: '50%', background: c }} />
+                            ))}
+                          </div>
+                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--text-faint)' }}>
+                            {sec.language || 'code'}
+                          </span>
+                          <button
+                            onClick={() => { navigator.clipboard?.writeText(sec.code); }}
+                            style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 5, padding: '3px 10px', fontSize: 10.5, color: 'var(--text-muted)', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}
+                          >
+                            Copy
+                          </button>
+                        </div>
+                        <pre style={{ background: '#06060e', padding: '18px 20px', margin: 0, fontFamily: 'var(--font-mono)', fontSize: 13, lineHeight: 1.9, color: '#9effd8', overflowX: 'auto' }}>
+                          <code>{sec.code}</code>
+                        </pre>
+                      </div>
+                    )}
+                  </div>
+                ))}
+
+                {/* Key Points */}
+                {lesson.keyPoints && lesson.keyPoints.length > 0 && (
+                  <div style={{ background: 'var(--surface-2)', border: '1px solid var(--border-strong)', borderRadius: 10, padding: '18px 20px', marginBottom: 28 }}>
+                    <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 12, color: 'var(--text)' }}>Key Takeaways</div>
+                    {lesson.keyPoints.map((pt, i) => (
+                      <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 8, alignItems: 'flex-start' }}>
+                        <div style={{ width: 6, height: 6, borderRadius: '50%', background: selectedPath.color, marginTop: 7, flexShrink: 0 }} />
+                        <span style={{ fontSize: 13.5, color: 'var(--text-muted)', lineHeight: 1.6 }}>{pt}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* What next */}
+                {lesson.whatNext && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 18px', background: 'var(--surface-1)', border: '1px solid var(--border)', borderRadius: 10, marginBottom: 28 }}>
+                    <span style={{ fontSize: 22 }}>📌</span>
+                    <div style={{ fontSize: 13.5, color: 'var(--text-muted)' }}>
+                      <strong style={{ color: 'var(--text)' }}>What to learn next: </strong>
+                      {lesson.whatNext}
+                    </div>
+                    {nextLesson && (
+                      <button
+                        className="btn btn-teal btn-sm"
+                        style={{ marginLeft: 'auto', flexShrink: 0 }}
+                        onClick={() => goToLesson(nextLesson)}
+                      >
+                        {nextLesson.title} &rarr;
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {/* Bottom nav */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: 16, borderTop: '1px solid var(--border)', marginBottom: 40 }}>
+                  <button
+                    className="btn btn-ghost"
+                    onClick={() => prevLesson && goToLesson(prevLesson)}
+                    disabled={!prevLesson}
+                    style={{ opacity: prevLesson ? 1 : 0.3 }}
+                  >
+                    &larr; {prevLesson ? prevLesson.title : 'Previous'}
+                  </button>
+                  <button
+                    className="btn"
+                    style={{ background: selectedPath.color, color: '#080810', fontWeight: 700, opacity: nextLesson ? 1 : 0.3 }}
+                    onClick={() => nextLesson && goToLesson(nextLesson)}
+                    disabled={!nextLesson}
+                  >
+                    {nextLesson ? nextLesson.title : 'Next'} &rarr;
+                  </button>
+                </div>
+              </div>
+
+            ) : activeTab === 'practice' ? (
+              /* ---- TRY IT YOURSELF TAB ---- */
+              <div style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '20px 24px' }}>
+                <div style={{ marginBottom: 14 }}>
+                  <h2 style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.02em', marginBottom: 6 }}>Try It Yourself</h2>
+                  <div style={{
+                    background: `${selectedPath.color}0d`,
+                    border: `1px solid ${selectedPath.color}22`,
+                    borderRadius: 9, padding: '10px 14px',
+                    fontSize: 13.5, color: 'var(--text-muted)', lineHeight: 1.6,
+                  }}>
+                    {lesson.tryItYourself?.instruction || 'Edit the code below and try running it in your browser console.'}
+                  </div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, flex: 1, minHeight: 0 }}>
+                  {/* Editor */}
+                  <div style={{ display: 'flex', flexDirection: 'column', borderRadius: 10, overflow: 'hidden', border: '1px solid var(--border-strong)' }}>
+                    <div style={{ background: '#0c0c18', padding: '9px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
+                      <div style={{ display: 'flex', gap: 5 }}>
+                        {['#ff5f57', '#ffbd2e', '#28ca41'].map((c, j) => <div key={j} style={{ width: 9, height: 9, borderRadius: '50%', background: c }} />)}
+                      </div>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--text-faint)' }}>
+                        {lesson.tryItYourself?.language || 'javascript'}
+                      </span>
+                      <button
+                        onClick={() => setUserCode(lesson.tryItYourself?.starterCode || '')}
+                        style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 5, padding: '3px 10px', fontSize: 10.5, color: 'var(--text-muted)', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}
+                      >
+                        Reset
+                      </button>
+                    </div>
+                    <textarea
+                      value={userCode}
+                      onChange={e => setUserCode(e.target.value)}
+                      className="code-editor"
+                      style={{ flex: 1, borderRadius: 0, border: 'none', resize: 'none', minHeight: 340 }}
+                    />
+                    <div style={{ background: '#0c0c18', padding: '9px 14px', borderTop: '1px solid var(--border)', flexShrink: 0 }}>
+                      <button
+                        className="btn"
+                        style={{ background: selectedPath.color, color: '#080810', fontWeight: 700, fontSize: 12.5, padding: '7px 18px' }}
+                        onClick={() => {
+                          try {
+                            const logs = [];
+                            const fakeConsole = { log: (...args) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' ')) };
+                            const fn = new Function('console', userCode);
+                            fn(fakeConsole);
+                            setCodeOutput(logs.length > 0 ? logs.join('\n') : '(no console output — add console.log() to see results)');
+                          } catch (err) {
+                            setCodeOutput('Error: ' + err.message);
+                          }
+                        }}
+                      >
+                        Run Code
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Output */}
+                  <div style={{ display: 'flex', flexDirection: 'column', borderRadius: 10, overflow: 'hidden', border: '1px solid var(--border-strong)' }}>
+                    <div style={{ background: '#0c0c18', padding: '9px 14px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10.5, color: 'var(--text-faint)' }}>Output</span>
+                    </div>
+                    <div style={{ flex: 1, background: '#06060e', padding: '16px 18px', fontFamily: 'var(--font-mono)', fontSize: 13, lineHeight: 1.8, color: codeOutput.startsWith('Error') ? '#f87171' : '#9effd8', overflowY: 'auto', whiteSpace: 'pre-wrap' }}>
+                      {codeOutput || <span style={{ color: 'var(--text-faint)' }}>Click Run Code to see output here.</span>}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            ) : activeTab === 'quiz' ? (
+              /* ---- QUIZ TAB ---- */
+              <div style={{ maxWidth: 620, margin: '0 auto', padding: '36px 24px' }}>
+                <h2 style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.02em', marginBottom: 6 }}>Quick Quiz</h2>
+                <p style={{ color: 'var(--text-faint)', fontSize: 13, marginBottom: 28 }}>Test your understanding of this lesson.</p>
+
+                {lesson.quiz ? (
+                  <>
+                    <div style={{ background: 'var(--surface-2)', border: '1px solid var(--border-strong)', borderRadius: 12, padding: '20px 22px', marginBottom: 20 }}>
+                      <p style={{ fontSize: 16, fontWeight: 700, lineHeight: 1.5, marginBottom: 4, color: 'var(--text)' }}>
+                        {lesson.quiz.question}
+                      </p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
+                      {(lesson.quiz.options || []).map((opt, i) => {
+                        let bg = 'var(--surface-2)';
+                        let borderColor = 'var(--border-strong)';
+                        let color = 'var(--text-muted)';
+
+                        if (quizChecked) {
+                          if (i === lesson.quiz.correctIndex) { bg = 'rgba(34,197,94,0.12)'; borderColor = '#22c55e'; color = '#4ade80'; }
+                          else if (i === quizAnswer)           { bg = 'rgba(239,68,68,0.1)';  borderColor = 'var(--red)'; color = '#f87171'; }
+                        } else if (quizAnswer === i) {
+                          bg = `${selectedPath.color}15`; borderColor = selectedPath.color; color = 'var(--text)';
+                        }
+
+                        return (
+                          <button
+                            key={i}
+                            onClick={() => { if (!quizChecked) setQuizAnswer(i); }}
+                            style={{
+                              display: 'flex', alignItems: 'center', gap: 12,
+                              padding: '13px 16px', borderRadius: 9,
+                              background: bg, border: `1.5px solid ${borderColor}`,
+                              cursor: quizChecked ? 'default' : 'pointer',
+                              textAlign: 'left', transition: 'all 0.15s', fontFamily: 'var(--font-ui)',
+                            }}
+                          >
+                            <div style={{
+                              width: 26, height: 26, borderRadius: '50%', flexShrink: 0,
+                              background: quizAnswer === i && !quizChecked ? selectedPath.color : 'var(--surface-3)',
+                              border: `1.5px solid ${borderColor}`,
+                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              fontFamily: 'var(--font-mono)', fontSize: 10, fontWeight: 700, color,
+                            }}>
+                              {String.fromCharCode(65 + i)}
+                            </div>
+                            <span style={{ fontSize: 14, color, fontWeight: quizAnswer === i ? 600 : 400 }}>{opt}</span>
+                            {quizChecked && i === lesson.quiz.correctIndex && (
+                              <span style={{ marginLeft: 'auto', color: '#4ade80', fontSize: 16 }}>✓</span>
+                            )}
+                            {quizChecked && i === quizAnswer && i !== lesson.quiz.correctIndex && (
+                              <span style={{ marginLeft: 'auto', color: '#f87171', fontSize: 16 }}>✗</span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {!quizChecked ? (
+                      <button
+                        className="btn btn-teal"
+                        onClick={() => { if (quizAnswer !== null) setQuizChecked(true); }}
+                        disabled={quizAnswer === null}
+                        style={{ opacity: quizAnswer === null ? 0.45 : 1 }}
+                      >
+                        Check Answer
+                      </button>
+                    ) : (
+                      <div>
+                        <div style={{
+                          padding: '14px 18px', borderRadius: 10, marginBottom: 16,
+                          background: quizAnswer === lesson.quiz.correctIndex ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.09)',
+                          border: `1px solid ${quizAnswer === lesson.quiz.correctIndex ? '#22c55e' : 'var(--red)'}`,
+                        }}>
+                          <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 5, color: quizAnswer === lesson.quiz.correctIndex ? '#4ade80' : '#f87171' }}>
+                            {quizAnswer === lesson.quiz.correctIndex ? 'Correct!' : 'Not quite'}
+                          </div>
+                          <p style={{ fontSize: 13.5, color: 'var(--text-muted)', lineHeight: 1.6 }}>{lesson.quiz.explanation}</p>
+                        </div>
+                        <div style={{ display: 'flex', gap: 10 }}>
+                          <button className="btn btn-ghost" onClick={() => { setQuizAnswer(null); setQuizChecked(false); }}>Try Again</button>
+                          {nextLesson && (
+                            <button className="btn" style={{ background: selectedPath.color, color: '#080810', fontWeight: 700 }} onClick={() => goToLesson(nextLesson)}>
+                              Next Lesson &rarr;
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <p style={{ color: 'var(--text-faint)' }}>No quiz available for this lesson.</p>
+                )}
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ----- Career page -----
+  function CareerPage({ showToast }) {
+    const [section, setSection] = useState('overview');
+    const [resumeForm, setResumeForm] = useState({
+      name: 'Sanjay Chaurasia',
+      role: 'Full Stack Developer',
+      skills: 'React, Node.js, AWS, Python',
+      experience: '2 years at a fintech startup, built UPI payment integrations',
+      education: 'B.Tech CSE, NIT Allahabad',
+    });
+    const [resumeOutput, setResumeOutput] = useState('');
+    const [resumeLoading, setResumeLoading] = useState(false);
+    const [interviewQ, setInterviewQ] = useState('');
+    const [interviewA, setInterviewA] = useState('');
+    const [interviewLoading, setInterviewLoading] = useState(false);
+    const [targetCompany, setTargetCompany] = useState('Razorpay');
+
+    async function generateResume() {
+      setResumeLoading(true);
+      const result = await callClaude(
+        'You are a senior technical resume writer for the Indian software industry. Write sharp, ATS-optimised content with powerful action verbs. Quantify impact wherever possible — use placeholder brackets like [X%] where you need the user to fill in numbers. Never make up numbers.',
+        [{
+          role: 'user',
+          content: `Write resume content for:\nName: ${resumeForm.name}\nRole: ${resumeForm.role}\nSkills: ${resumeForm.skills}\nExperience: ${resumeForm.experience}\nEducation: ${resumeForm.education}\n\nInclude: 3-sentence professional summary, skills section, experience bullets with metric placeholders, and 4 tips specific to the Indian job market.`,
+        }]
+      );
+      setResumeOutput(result);
+      showToast({ icon: '📄', title: 'Resume ready!', subtitle: 'Optimised for India', xpGain: '+60 XP', color: 'var(--violet)' });
+      setResumeLoading(false);
+    }
+
+    async function getInterviewAnswer() {
+      if (!interviewQ.trim()) return;
+      setInterviewLoading(true);
+      const result = await callClaude(
+        `You are a senior engineer who has interviewed at top Indian product companies. Give structured, depth-showing interview answers covering: the concept, implementation details, trade-offs, and Indian-scale context (UPI volumes, 500M+ users, Bharat network conditions) where relevant.`,
+        [{
+          role: 'user',
+          content: `Company: ${targetCompany}\nQuestion: ${interviewQ}\n\nGive: a model answer, key concepts to cover, and 3 likely follow-up questions.`,
+        }]
+      );
+      setInterviewA(result);
+      showToast({ icon: '💬', title: 'Answer ready!', subtitle: `${targetCompany} prep`, xpGain: '+40 XP', color: 'var(--teal-light)' });
+      setInterviewLoading(false);
+    }
+
+    function renderText(text) {
+      return text
+        .replace(/^## (.+)$/gm, '<h3 style="font-size:15px;font-weight:700;margin:18px 0 8px;color:var(--text)">$1</h3>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--yellow)">$1</strong>')
+        .replace(/`([^`\n]+)`/g, '<code style="font-family:var(--font-mono);font-size:11px;background:rgba(20,184,166,0.1);padding:2px 6px;border-radius:4px;color:var(--teal-light)">$1</code>')
+        .replace(/\n\n/g, '<br><br>')
+        .replace(/\n/g, '<br>');
+    }
+
+    const navItems = [
+      { id: 'overview',   label: 'Overview',       icon: '📊' },
+      { id: 'resume',     label: 'Resume Builder',  icon: '📄' },
+      { id: 'interview',  label: 'Interview Prep',  icon: '💬' },
+      { id: 'roadmap',    label: 'Career Roadmap',  icon: '🗺' },
+    ];
+
+    return (
+      <div className="fade-in" style={{ maxWidth: 1400, margin: '70px auto 60px', padding: '0 24px', position: 'relative', zIndex: 1 }}>
+        <div style={{ marginBottom: 26 }}>
+          <h1 style={{ fontSize: 36, fontWeight: 800, letterSpacing: '-0.03em', marginBottom: 5 }}>
+            <span className="text-gradient-teal">Career Accelerator</span>
+          </h1>
+          <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>AI tools to help you land your dream role in the Indian tech ecosystem.</p>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: 24 }}>
+          <aside>
+            {navItems.map(item => (
+              <button
+                key={item.id}
+                className={`sidebar-btn ${section === item.id ? 'active' : ''}`}
+                onClick={() => setSection(item.id)}
+              >
+                <span style={{ fontSize: 14 }}>{item.icon}</span>
+                {item.label}
+              </button>
+            ))}
+
+            <div className="level-card" style={{ marginTop: 16 }}>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 8, color: 'var(--teal)', letterSpacing: '0.12em', marginBottom: 5, fontWeight: 700 }}>
+                JOB FIT SCORE
+              </div>
+              <div style={{ fontSize: 44, fontWeight: 800, lineHeight: 1, letterSpacing: '-0.03em' }} className="text-gradient-teal">78%</div>
+              <div style={{ fontSize: 11, color: 'var(--text-faint)', marginTop: 4 }}>Full Stack — Bangalore</div>
+              <div className="progress-track" style={{ marginTop: 9 }}>
+                <div className="progress-fill" style={{ width: '78%', background: 'var(--teal)' }} />
+              </div>
+            </div>
+          </aside>
+
+          <div>
+            {section === 'overview' && (
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                {[
+                  { icon: '🏢', title: 'Top companies hiring', color: 'var(--teal)',          items: ['Razorpay — 12 open roles', 'CRED — 8 open roles', 'Meesho — 15 open roles', 'Groww — 6 open roles', 'PhonePe — 10 open roles'] },
+                  { icon: '📈', title: 'Skills in demand 2025', color: 'var(--violet)',        items: ['Generative AI integration', 'AWS Serverless and Lambda', 'React Native', 'System Design at L5+', 'DSA — 200+ LeetCode problems'] },
+                  { icon: '💰', title: 'Salary ranges India',   color: 'var(--yellow)',        items: ['Fresher: 6 to 12 LPA', '2 to 3 years: 12 to 25 LPA', '5+ years: 25 to 50 LPA', 'Principal / Staff: 50L+', 'Startup ESOP: significant upside'] },
+                  { icon: '📅', title: 'Upcoming events',       color: 'var(--red)',           items: ['AWS re:Invent India', 'PyData Delhi', 'React India 2025', 'Startup India Demo Day', 'HackWithInfy 2025'] },
+                ].map((box, i) => (
+                  <div key={i} className="card" style={{ borderColor: `${box.color}18` }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 13 }}>
+                      <span style={{ fontSize: 18 }}>{box.icon}</span>
+                      <h3 style={{ fontSize: 14, fontWeight: 700 }}>{box.title}</h3>
+                    </div>
+                    {box.items.map((item, j) => (
+                      <div key={j} style={{ padding: '7px 0', borderBottom: j < box.items.length - 1 ? '1px solid var(--border)' : 'none', fontSize: 13, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 9 }}>
+                        <div style={{ width: 4, height: 4, borderRadius: '50%', background: box.color, flexShrink: 0 }} />
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {section === 'resume' && (
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                <div className="card">
+                  <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>Your Details</h3>
+                  {Object.entries(resumeForm).map(([key, val]) => (
+                    <div key={key} style={{ marginBottom: 12 }}>
+                      <label className="field-label" style={{ textTransform: 'capitalize' }}>{key}</label>
+                      <textarea
+                        value={val}
+                        onChange={e => setResumeForm(prev => ({ ...prev, [key]: e.target.value }))}
+                        style={{ width: '100%', padding: '8px 12px', fontSize: 13, resize: 'none', height: 54, lineHeight: 1.5, borderRadius: 8, background: 'var(--surface-3)', border: '1.5px solid var(--border-strong)', color: 'var(--text)', outline: 'none' }}
+                      />
+                    </div>
+                  ))}
+                  <button className="btn btn-orange" style={{ width: '100%', justifyContent: 'center' }} onClick={generateResume} disabled={resumeLoading}>
+                    {resumeLoading ? 'Writing...' : 'Generate Resume'}
+                  </button>
+                </div>
+                <div className="card" style={{ overflowY: 'auto', maxHeight: 580 }}>
+                  <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 14 }}>AI Output</h3>
+                  {resumeLoading ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '36px 0' }}>
+                      <div className="spinner" />
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-faint)' }}>Writing your resume...</span>
+                    </div>
+                  ) : resumeOutput ? (
+                    <div style={{ fontSize: 13, lineHeight: 1.8, color: 'var(--text-muted)' }} dangerouslySetInnerHTML={{ __html: renderText(resumeOutput) }} />
+                  ) : (
+                    <p style={{ fontSize: 13, color: 'var(--text-faint)' }}>Fill in your details above and click generate.</p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {section === 'interview' && (
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                <div className="card">
+                  <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>Interview Simulator</h3>
+
+                  <div style={{ marginBottom: 12 }}>
+                    <label className="field-label">Target Company</label>
+                    <select
+                      value={targetCompany}
+                      onChange={e => setTargetCompany(e.target.value)}
+                      style={{ width: '100%', padding: '9px 12px', fontSize: 13, cursor: 'pointer', borderRadius: 8, background: 'var(--surface-3)', border: '1.5px solid var(--border-strong)', color: 'var(--text)', outline: 'none' }}
+                    >
+                      {COMPANIES.map(c => <option key={c} value={c}>{c}</option>)}
+                    </select>
+                  </div>
+
+                  <div style={{ marginBottom: 12 }}>
+                    <label className="field-label">Question</label>
+                    <textarea
+                      value={interviewQ}
+                      onChange={e => setInterviewQ(e.target.value)}
+                      placeholder="e.g. Design a UPI system handling 1 billion transactions per day"
+                      style={{ width: '100%', padding: '9px 12px', fontSize: 13, resize: 'none', height: 90, borderRadius: 8, background: 'var(--surface-3)', border: '1.5px solid var(--border-strong)', color: 'var(--text)', outline: 'none', lineHeight: 1.6 }}
+                    />
+                  </div>
+
+                  <button className="btn btn-teal" style={{ width: '100%', justifyContent: 'center' }} onClick={getInterviewAnswer} disabled={interviewLoading || !interviewQ.trim()}>
+                    {interviewLoading ? 'Preparing answer...' : 'Get Model Answer'}
+                  </button>
+
+                  <div className="separator" />
+
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 8, color: 'var(--text-faint)', letterSpacing: '0.1em', marginBottom: 9, fontWeight: 700 }}>
+                    COMMON QUESTIONS
+                  </div>
+                  {[
+                    'Explain CAP theorem with an Indian startup example',
+                    'Design Zomato order tracking at scale',
+                    'How does UPI work technically?',
+                    'Monolith vs microservices for a new startup',
+                  ].map((q, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setInterviewQ(q)}
+                      style={{
+                        display: 'block', width: '100%', textAlign: 'left',
+                        background: 'none', border: 'none',
+                        borderBottom: '1px solid var(--border)',
+                        padding: '8px 0', fontSize: 12, color: 'var(--text-faint)',
+                        cursor: 'pointer', transition: 'color 0.12s',
+                        fontFamily: 'var(--font-ui)',
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.color = 'var(--teal-light)'}
+                      onMouseLeave={e => e.currentTarget.style.color = 'var(--text-faint)'}
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="card" style={{ overflowY: 'auto', maxHeight: 560 }}>
+                  <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 14 }}>Model Answer — {targetCompany}</h3>
+                  {interviewLoading ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '36px 0' }}>
+                      <div className="spinner" />
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-faint)' }}>Preparing answer...</span>
+                    </div>
+                  ) : interviewA ? (
+                    <div style={{ fontSize: 13, lineHeight: 1.8, color: 'var(--text-muted)' }} dangerouslySetInnerHTML={{ __html: renderText(interviewA) }} />
+                  ) : (
+                    <p style={{ fontSize: 13, color: 'var(--text-faint)' }}>Select a company and enter your question above.</p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {section === 'roadmap' && (
+              <div className="card">
+                <h3 style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.02em', marginBottom: 28 }}>Your Personalised Roadmap</h3>
+                {[
+                  { phase: 'Phase 1', title: 'Foundations',  time: 'Months 1 to 2',  status: 'done',     color: 'var(--teal)',          topics: ['JavaScript ES6+', 'React basics', 'Node.js and REST', 'Git and GitHub'] },
+                  { phase: 'Phase 2', title: 'Intermediate', time: 'Months 3 to 4',  status: 'active',   color: 'var(--orange-light)',  topics: ['AWS Lambda', 'DynamoDB', 'Advanced React', 'System design intro'] },
+                  { phase: 'Phase 3', title: 'Advanced',     time: 'Months 5 to 6',  status: 'upcoming', color: 'var(--violet)',        topics: ['Microservices', 'Kubernetes', 'ML integration', 'Performance at scale'] },
+                  { phase: 'Phase 4', title: 'Job Ready',    time: 'Month 7 onwards', status: 'upcoming', color: 'var(--red)',           topics: ['150+ LeetCode', 'System design', 'Portfolio projects', 'Mock interviews'] },
+                ].map((step, i) => (
+                  <div key={i} className="roadmap-step">
+                    <div className="roadmap-line">
+                      <div
+                        className="roadmap-dot"
+                        style={{
+                          background: step.status === 'done' ? step.color : step.status === 'active' ? `${step.color}28` : 'var(--surface-3)',
+                          border: `2px solid ${step.color}`,
+                          color: step.status === 'done' ? '#080810' : step.color,
+                          boxShadow: step.status !== 'upcoming' ? `0 0 12px ${step.color}44` : 'none',
+                        }}
+                      >
+                        {step.status === 'done' ? 'v' : step.status === 'active' ? '>' : ''}
+                      </div>
+                      {i < 3 && (
+                        <div className="roadmap-connector" style={{ background: `linear-gradient(${step.color}, var(--border))` }} />
+                      )}
+                    </div>
+                    <div style={{ flex: 1, paddingTop: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: 9, marginBottom: 9, flexWrap: 'wrap' }}>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: step.color, letterSpacing: '0.08em', fontWeight: 700 }}>{step.phase}</span>
+                        <span style={{ fontSize: 17, fontWeight: 800, color: step.status === 'upcoming' ? 'var(--text-faint)' : 'var(--text)', letterSpacing: '-0.02em' }}>{step.title}</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--text-faint)' }}>{step.time}</span>
+                        {step.status === 'active' && <span className="tag tag-orange">In progress</span>}
+                      </div>
+                      <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap' }}>
+                        {step.topics.map((topic, j) => (
+                          <span key={j} style={{
+                            padding: '4px 11px', borderRadius: 7, fontSize: 12, fontWeight: 600,
+                            background: step.status === 'upcoming' ? 'var(--surface-2)' : `${step.color}12`,
+                            border: `1px solid ${step.status === 'upcoming' ? 'var(--border)' : step.color + '28'}`,
+                            color: step.status === 'upcoming' ? 'var(--text-faint)' : step.color,
+                          }}>
+                            {topic}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ----- Community page -----
+  function CommunityPage({ showToast }) {
+    const [likedPosts, setLikedPosts]     = useState(new Set());
+    const [activeFilter, setActiveFilter] = useState('All');
+    const [showModal, setShowModal]       = useState(false);
+    const [postTitle, setPostTitle]       = useState('');
+    const [postBody, setPostBody]         = useState('');
+    const [postTags, setPostTags]         = useState('');
+    const [postCategory, setPostCategory] = useState('Career');
+    const [aiLoading, setAiLoading]       = useState(false);
+    const [submitting, setSubmitting]     = useState(false);
+    const [userPosts, setUserPosts]       = useState([]);
+
+    async function suggestTitle() {
+      if (!postBody.trim()) return;
+      setAiLoading(true);
+      const result = await callClaude(
+        'You are a community manager for an Indian developer community. Write engaging, honest post titles — not clickbait. Sound like a real developer sharing their experience. Keep it under 120 characters.',
+        [{ role: 'user', content: `Suggest 3 post titles for this post:\n\n${postBody}\n\nReturn ONLY the 3 titles, one per line, no numbering, no quotes.` }]
+      );
+      const titles = result.trim().split('\n').filter(Boolean);
+      if (titles.length > 0) setPostTitle(titles[0]);
+      setAiLoading(false);
+    }
+
+    function submitPost() {
+      if (!postTitle.trim() || !postBody.trim()) return;
+      setSubmitting(true);
+      const newPost = {
+        id: Date.now(),
+        name: 'You',
+        city: 'Your City',
+        ago: 'just now',
+        emoji: '✨',
+        title: postTitle,
+        body: postBody,
+        tags: postTags.split(',').map(t => t.trim()).filter(Boolean).slice(0, 3),
+        likes: 0,
+        comments: 0,
+        color: '#14b8a6',
+        category: postCategory,
+      };
+      setUserPosts(prev => [newPost, ...prev]);
+      setShowModal(false);
+      setPostTitle(''); setPostBody(''); setPostTags('');
+      setSubmitting(false);
+      showToast({ icon: '🎉', title: 'Post published!', subtitle: 'Your story is live', xpGain: '+50 XP', color: 'var(--orange)' });
+    }
+
+    const seedPosts = [
+      { id: 0, name: 'Priya Sharma',  city: 'Bangalore', ago: '2h',     emoji: '🌱', title: 'Built a WhatsApp bot for rural farmers using AWS Lambda — reaching 10,000 farmers daily now', tags: ['AWS', 'Python', 'Impact'],  likes: 234, comments: 45,  color: '#2c6e49', category: 'AWS'        },
+      { id: 1, name: 'Rahul Gupta',   city: 'Mumbai',    ago: '4h',     emoji: '🔥', title: 'How I cracked Razorpay without grinding LeetCode — system design and product thinking mattered more', tags: ['Career', 'Interview'],  likes: 567, comments: 89,  color: '#7b3f00', category: 'Career'     },
+      { id: 2, name: 'Ananya Iyer',   city: 'Chennai',   ago: '6h',     emoji: '❤️', title: 'Built a React Native app for rural healthcare — 500 daily users, looking for a technical co-founder', tags: ['Mobile', 'Startup'],   likes: 145, comments: 34,  color: '#1d4e89', category: 'Startup'    },
+      { id: 3, name: 'Vikram Singh',  city: 'Delhi NCR', ago: '1 day',  emoji: '⭐', title: 'Open-sourced a Hindi code-comments library — 500 GitHub stars in 48 hours, totally unexpected',        tags: ['Open Source', 'Hindi'],likes: 892, comments: 123, color: '#6b2d8b', category: 'Open Source'},
+      { id: 4, name: 'Meera Patel',   city: 'Ahmedabad', ago: '2 days', emoji: '🚀', title: 'Tier 3 college to CRED in 18 months — here is exactly what worked and what wasted my time',           tags: ['Career', 'Story'],     likes: 1240,comments: 210, color: '#a0522d', category: 'Career'     },
+    ];
+    const posts = [...userPosts, ...seedPosts];
+
+    const filters = ['All', 'Career', 'AWS', 'Startup', 'Open Source'];
+    const filteredPosts = activeFilter === 'All' ? posts : posts.filter(p => p.category === activeFilter);
+
+    const trending = ['#GenAI', '#AWSBedrock', '#ReactNative', '#StartupIndia', '#UPIIntegration', '#DSA', '#BharatTech'];
+    const cities = [['Bangalore', 12400], ['Mumbai', 8900], ['Delhi NCR', 7600], ['Hyderabad', 5400], ['Pune', 4200], ['Chennai', 3800]];
+
+    function toggleLike(id) {
+      setLikedPosts(prev => {
+        const next = new Set(prev);
+        next.has(id) ? next.delete(id) : next.add(id);
+        return next;
+      });
+    }
+
+    return (
+      <>
+      <div className="fade-in" style={{ maxWidth: 1400, margin: '70px auto 60px', padding: '0 24px', position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 24, flexWrap: 'wrap', gap: 14 }}>
+          <div>
+            <h1 style={{ fontSize: 36, fontWeight: 800, letterSpacing: '-0.03em', marginBottom: 5 }}>
+              <span className="text-gradient-teal">Community</span>
+            </h1>
+            <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>50,000+ Indian developers learning, building, and growing together.</p>
+          </div>
+          <button className="btn btn-orange" onClick={() => setShowModal(true)}>Write a Post</button>
+        </div>
+
+        <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
+          {filters.map(f => (
+            <button
+              key={f}
+              className={`filter-pill ${activeFilter === f ? 'active' : ''}`}
+              onClick={() => setActiveFilter(f)}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 285px', gap: 24 }}>
+          <div>
+            {filteredPosts.map(post => (
+              <div key={post.id} className="post-card">
+                <div style={{ display: 'flex', gap: 12 }}>
+                  <div style={{
+                    width: 40, height: 40, borderRadius: 10, flexShrink: 0,
+                    background: post.color,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    color: '#fff', fontSize: 14, fontWeight: 800,
+                    boxShadow: `0 4px 14px ${post.color}44`,
+                  }}>
+                    {post.name[0]}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 7, marginBottom: 5, flexWrap: 'wrap' }}>
+                      <span style={{ fontWeight: 700, fontSize: 13 }}>{post.name}</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--text-faint)' }}>{post.city}</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--text-faint)', marginLeft: 'auto' }}>{post.ago} ago</span>
+                    </div>
+                    <p
+                      style={{ fontSize: 13.5, fontWeight: 600, lineHeight: 1.45, marginBottom: 10, color: 'var(--text)', transition: 'color 0.14s', cursor: 'pointer' }}
+                      onMouseEnter={e => e.currentTarget.style.color = 'var(--teal-light)'}
+                      onMouseLeave={e => e.currentTarget.style.color = 'var(--text)'}
+                    >
+                      {post.emoji} {post.title}
+                    </p>
+                    <div style={{ display: 'flex', gap: 5, marginBottom: 10, flexWrap: 'wrap' }}>
+                      {post.tags.map((t, j) => <span key={j} className="tag tag-muted">{t}</span>)}
+                    </div>
+                    <div style={{ display: 'flex', gap: 14 }}>
+                      <button
+                        onClick={() => toggleLike(post.id)}
+                        style={{
+                          background: 'none', border: 'none',
+                          fontSize: 12, color: likedPosts.has(post.id) ? 'var(--red)' : 'var(--text-faint)',
+                          cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4,
+                          padding: 0, transition: 'color 0.12s',
+                          fontFamily: 'var(--font-ui)', fontWeight: likedPosts.has(post.id) ? 700 : 400,
+                        }}
+                      >
+                        {likedPosts.has(post.id) ? '♥' : '♡'} {post.likes + (likedPosts.has(post.id) ? 1 : 0)} likes
+                      </button>
+                      <button style={{ background: 'none', border: 'none', fontSize: 12, color: 'var(--text-faint)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4, padding: 0, fontFamily: 'var(--font-ui)' }}
+                        onMouseEnter={e => e.currentTarget.style.color = 'var(--text)'}
+                        onMouseLeave={e => e.currentTarget.style.color = 'var(--text-faint)'}>
+                        {post.comments} comments
+                      </button>
+                      <button style={{ background: 'none', border: 'none', fontSize: 12, color: 'var(--text-faint)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4, padding: 0, fontFamily: 'var(--font-ui)' }}
+                        onMouseEnter={e => e.currentTarget.style.color = 'var(--text)'}
+                        onMouseLeave={e => e.currentTarget.style.color = 'var(--text-faint)'}>
+                        Share
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <aside style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {/* Trending */}
+            <div className="card" style={{ borderColor: 'rgba(249,115,22,0.15)' }}>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 8, color: 'var(--orange-light)', letterSpacing: '0.12em', marginBottom: 12, fontWeight: 700 }}>
+                TRENDING THIS WEEK
+              </div>
+              {trending.map((tag, i) => (
+                <div key={i} className="trending-row">
+                  <span
+                    style={{ fontSize: 13, color: 'var(--orange-light)', cursor: 'pointer', fontWeight: 600, transition: 'color 0.12s' }}
+                    onMouseEnter={e => e.currentTarget.style.color = 'var(--text)'}
+                    onMouseLeave={e => e.currentTarget.style.color = 'var(--orange-light)'}
+                  >
+                    {tag}
+                  </span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9.5, color: 'var(--text-faint)' }}>
+                    {[430, 380, 290, 260, 210, 190, 140][i]}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Active cities */}
+            <div className="card">
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 8, color: 'var(--text-faint)', letterSpacing: '0.12em', marginBottom: 12, fontWeight: 700 }}>
+                ACTIVE CITIES
+              </div>
+              {cities.map(([city, count], i) => (
+                <div key={i} className="city-row">
+                  <span style={{ fontSize: 13 }}>{city}</span>
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--teal-light)', fontWeight: 700 }}>{count.toLocaleString()}</div>
+                    <div style={{ height: 2, width: 55, background: 'var(--surface-3)', borderRadius: 1, overflow: 'hidden', marginTop: 3 }}>
+                      <div style={{ height: '100%', width: `${Math.round(count / 12400 * 100)}%`, background: 'linear-gradient(90deg, var(--teal), var(--violet))' }} />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Event promo */}
+            <div className="card" style={{ borderColor: 'rgba(20,184,166,0.15)' }}>
+              <div style={{ fontSize: 26, marginBottom: 9 }}>🏆</div>
+              <div style={{ fontSize: 15, fontWeight: 800, marginBottom: 5 }}>AWS AI for Bharat</div>
+              <p style={{ fontSize: 12.5, color: 'var(--text-muted)', marginBottom: 14, lineHeight: 1.6 }}>
+                Register before March 30. Compete and connect with AWS engineers from across India.
+              </p>
+              <button className="btn btn-teal" style={{ width: '100%', justifyContent: 'center' }}>Register Now</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      {/* ---- Write a Post Modal ---- */}
+      {showModal && (
+        <div
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.72)', backdropFilter: 'blur(6px)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}
+          onClick={e => { if (e.target === e.currentTarget) setShowModal(false); }}
+        >
+          <div style={{ background: 'var(--surface-1)', border: '1px solid var(--border-strong)', borderRadius: 16, width: '100%', maxWidth: 600, padding: 28, animation: 'fadeIn 0.2s ease' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 22 }}>
+              <h2 style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.02em' }}>Write a Post</h2>
+              <button
+                onClick={() => setShowModal(false)}
+                style={{ background: 'var(--surface-3)', border: 'none', color: 'var(--text-muted)', width: 30, height: 30, borderRadius: '50%', cursor: 'pointer', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                &times;
+              </button>
+            </div>
+
+            {/* Category */}
+            <div style={{ marginBottom: 14 }}>
+              <label className="field-label">Category</label>
+              <select
+                value={postCategory}
+                onChange={e => setPostCategory(e.target.value)}
+                style={{ width: '100%', padding: '9px 12px' }}
+              >
+                {['Career', 'AWS', 'Startup', 'Open Source', 'Tutorial', 'Question', 'Hiring', 'Showcase'].map(c => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Body first — used by AI to suggest title */}
+            <div style={{ marginBottom: 14 }}>
+              <label className="field-label">Your Story / Question</label>
+              <textarea
+                value={postBody}
+                onChange={e => setPostBody(e.target.value)}
+                placeholder="Share what you built, learned, or want help with. Be specific — the community loves real stories."
+                style={{ width: '100%', padding: '10px 13px', minHeight: 110, resize: 'vertical', lineHeight: 1.65, borderRadius: 10 }}
+              />
+            </div>
+
+            {/* Title with AI suggestion */}
+            <div style={{ marginBottom: 14 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
+                <label className="field-label" style={{ margin: 0 }}>Post Title</label>
+                <button
+                  onClick={suggestTitle}
+                  disabled={aiLoading || !postBody.trim()}
+                  style={{
+                    background: 'none', border: '1px solid var(--border-strong)',
+                    borderRadius: 7, padding: '3px 11px', fontSize: 11.5,
+                    color: aiLoading ? 'var(--text-faint)' : 'var(--teal-light)',
+                    cursor: postBody.trim() ? 'pointer' : 'not-allowed',
+                    fontFamily: 'var(--font-ui)', fontWeight: 600,
+                    opacity: postBody.trim() ? 1 : 0.45,
+                  }}
+                >
+                  {aiLoading ? 'Thinking...' : 'AI Suggest Title'}
+                </button>
+              </div>
+              <input
+                type="text"
+                value={postTitle}
+                onChange={e => setPostTitle(e.target.value)}
+                placeholder="Write a catchy title or use AI to suggest one"
+                style={{ width: '100%', padding: '9px 13px', borderRadius: 10 }}
+              />
+            </div>
+
+            {/* Tags */}
+            <div style={{ marginBottom: 22 }}>
+              <label className="field-label">Tags (comma separated)</label>
+              <input
+                type="text"
+                value={postTags}
+                onChange={e => setPostTags(e.target.value)}
+                placeholder="e.g. React, AWS, UPI"
+                style={{ width: '100%', padding: '9px 13px', borderRadius: 10 }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+              <button className="btn-ghost" onClick={() => setShowModal(false)}>Cancel</button>
+              <button
+                className="btn btn-orange"
+                onClick={submitPost}
+                disabled={!postTitle.trim() || !postBody.trim() || submitting}
+                style={{ opacity: (!postTitle.trim() || !postBody.trim()) ? 0.5 : 1 }}
+              >
+                {submitting ? 'Publishing...' : 'Publish Post'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      </>
+    );
+  }
+
+  // ----- Root App -----
+  function App() {
+    const [currentPage, setCurrentPage] = useState('dashboard');
+    const [lang, setLang] = useState('en');
+    const [xp, setXp] = useState(7240);
+    const [toastData, setToastData] = useState(null);
+    const [showConfetti, setShowConfetti] = useState(false);
+    const streak = 14;
+
+    const showToast = useCallback((data) => {
+      setToastData(data);
+      if (data.title.toLowerCase().includes('complete') || data.title.toLowerCase().includes('done')) {
+        setShowConfetti(true);
+        setTimeout(() => setShowConfetti(false), 3800);
+      }
+      if (data.xpGain) {
+        const amount = parseInt(data.xpGain.replace(/\D/g, '') || '0');
+        if (amount > 0) setXp(prev => prev + amount);
+      }
+    }, []);
+
+    const pageMap = {
+      dashboard: DashboardPage,
+      mentor:    MentorPage,
+      review:    CodeReviewPage,
+      learn:     LearnPage,
+      career:    CareerPage,
+      community: CommunityPage,
+    };
+
+    const CurrentPage = pageMap[currentPage] || DashboardPage;
+
+    return (
+      <div id="app">
+        <div className="bg-blobs">
+          <span />
+          <span />
+          <span />
+        </div>
+
+        <Navbar
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          lang={lang}
+          setLang={setLang}
+          xp={xp}
+          streak={streak}
+        />
+
+        <main style={{ flex: 1, position: 'relative', zIndex: 1 }}>
+          <CurrentPage
+            setCurrentPage={setCurrentPage}
+            lang={lang}
+            xp={xp}
+            setXp={setXp}
+            streak={streak}
+            showToast={showToast}
+          />
+        </main>
+
+        <footer>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--text-faint)' }}>
+              DevMentor — AI for Bharat Hackathon — Claude + AWS Bedrock
+            </span>
+            <span style={{ fontFamily: 'var(--font-devanagari)', fontSize: 12, color: 'var(--text-faint)' }}>
+              भारत के लिए बनाया गया
+            </span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+            <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--teal)', boxShadow: '0 0 6px var(--teal)' }} />
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--teal)' }}>Live</span>
+          </div>
+        </footer>
+
+        <Confetti show={showConfetti} />
+        {toastData && <Toast data={toastData} onClose={() => setToastData(null)} />}
+      </div>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('app')).render(<App />);
+</script>
+</body>
+</html>
