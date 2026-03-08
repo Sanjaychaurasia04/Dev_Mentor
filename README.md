@@ -1,4 +1,4 @@
-# 🚀 DevMentor — Learn to Code. For India.
+#  DevMentor — Learn to Code. For India.
 
 <div align="center">
 
@@ -10,7 +10,7 @@
 [![Single File](https://img.shields.io/badge/Deploy-Single%20HTML%20File-14b8a6?style=flat-square)]()
 [![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)]()
 
-### 🌐 [Live Demo → dev-mentor-s3.s3.eu-north-1.amazonaws.com/index.html](https://dev-mentor-s3.s3.eu-north-1.amazonaws.com/index.html)
+###  [Live Demo → dev-mentor-s3.s3.eu-north-1.amazonaws.com/index.html](https://dev-mentor-s3.s3.eu-north-1.amazonaws.com/index.html)
 
 <br />
 
@@ -21,7 +21,7 @@
 
 ---
 
-## ✨ What is DevMentor?
+##  What is DevMentor?
 
 DevMentor is a gamified, AI-powered coding education platform designed specifically for Indian developers. It bridges the gap between generic global platforms and the real needs of India's developer community — with multilingual support, locally relevant examples (UPI, Razorpay, GST), career guidance tailored to Indian companies, and a live community feed.
 
@@ -31,39 +31,39 @@ Everything runs in a **single `index.html` file** — zero build step, zero depe
 
 ## 📸 Pages & Features
 
-### 🏠 Dashboard
+###  Dashboard
 - Personalized hero section with XP progress, daily streak counter, and level display
 - **4-column stat grid**: XP earned, coding streak, problems solved, community rank
 - **6 Learning Paths**: Full Stack, AI/ML, Cloud & DevOps, Android, Startup Engineering, DSA & Interview Prep
 - Live activity feed, quick-action shortcuts, and a leaderboard sidebar
 - Daily challenge countdown timer with XP rewards
 
-### 🤖 AI Mentor (`/mentor`)
+###  AI Mentor (`/mentor`)
 - Real-time chat interface powered by **Groq's LLaMA 3.3-70b**
 - Ask questions in **10 Indian languages**: Hindi, Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, Malayalam, Punjabi, and English
 - Pre-built quick-prompt chips for common developer questions
 - Voice input button (UI-ready)
 - India-specific context: UPI integrations, startup ecosystem, Indian company interview prep
 
-### 🔍 Code Review (`/review`)
+###  Code Review (`/review`)
 - Paste any code snippet and get an AI-powered review
 - Pre-loaded sample: a real Razorpay/UPI Python integration with a deliberate security bug
 - Structured feedback: bugs, security issues, performance, best practices, suggested fixes
 - Simulated review history panel with timestamps
 
-### 📚 Learn (`/learn`)
+###  Learn (`/learn`)
 - **Skill Galaxy** — an interactive visual node graph of skills to unlock
 - Module list for each learning path with progress tracking
 - Curated video tutorials (free resources)
 - Reading list with estimated durations
 
-### 💼 Career (`/career`)
+###  Career (`/career`)
 - Role-based roadmaps: SDE-1 → SDE-2 → Senior → Staff
 - Company-specific interview prep for **16 Indian & global companies** (Razorpay, Flipkart, Zomato, CRED, Google India, etc.)
 - Salary benchmarks for the Indian market
 - Resume tips and mock interview mode
 
-### 🌐 Community (`/community`)
+###  Community (`/community`)
 - Posts feed with category filters: Career, AWS, Startup, Open Source, Tutorial, Questions, Hiring, Showcase
 - Like, comment, and bookmark interactions
 - **Write a Post modal** with AI-suggested title generation
@@ -73,21 +73,21 @@ Everything runs in a **single `index.html` file** — zero build step, zero depe
 
 ---
 
-## 🎮 Gamification System
+##  Gamification System
 
 | Element | Description |
 |---|---|
 | **XP Points** | Earned by completing modules, code reviews, streaks, and posting |
-| **Daily Streak** | Consecutive days of activity, shown in the navbar with 🔥 |
+| **Daily Streak** | Consecutive days of activity, shown in the navbar with  |
 | **Levels** | XP thresholds unlock new badges and paths |
 | **Achievements** | Badges like First Commit, 14-Day Streak, Speed Coder, Deep Thinker |
 | **Leaderboard** | Real-time rank among Indian developers by city |
-| **Confetti** | Fires on milestone completions for dopamine hits 🎉 |
+| **Confetti** | Fires on milestone completions for dopamine hits  |
 | **Toast Notifications** | XP gain toasts with slide-up animations |
 
 ---
 
-## 🌍 Multilingual Support
+##  Multilingual Support
 
 DevMentor supports **10 Indian languages** selectable from the navbar:
 
@@ -97,7 +97,7 @@ The AI Mentor responds in whichever language the user selects, making coding edu
 
 ---
 
-## 🏗️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -111,11 +111,11 @@ The AI Mentor responds in whichever language the user selects, making coding edu
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 No installation, no build tools, no `npm install`.
 
-### 🌐 Try it live
+### Try it live
 **[https://dev-mentor-s3.s3.eu-north-1.amazonaws.com/index.html](https://dev-mentor-s3.s3.eu-north-1.amazonaws.com/index.html)**
 
 
@@ -142,7 +142,7 @@ Drop `index.html` into your repo root and point the deployment to it. Done.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 devmentor/
@@ -150,7 +150,7 @@ devmentor/
 ```
 ---
 
-## 🎨 Design System
+## Design System
 
 The UI uses a dark-mode-first design with a consistent token system:
 
@@ -169,18 +169,18 @@ Animated background glow blobs (orange, teal, violet) drift subtly behind all pa
 
 | Path | Topics | Color |
 |---|---|---|
-| ⚡ Full Stack Dev | React · Node · AWS | Orange |
-| 🧠 AI & Machine Learning | Python · TensorFlow · Bedrock | Violet |
-| ☁️ Cloud & DevOps | AWS · Kubernetes · Terraform | Teal |
-| 📱 Android Dev | Kotlin · Jetpack Compose | Red |
-| 🚀 Startup Engineering | UPI · MVP · Scale · GST | Yellow |
-| 💡 DSA & Interview Prep | LeetCode · System Design | Green |
+|  Full Stack Dev | React · Node · AWS | Orange |
+|  AI & Machine Learning | Python · TensorFlow · Bedrock | Violet |
+|  Cloud & DevOps | AWS · Kubernetes · Terraform | Teal |
+|  Android Dev | Kotlin · Jetpack Compose | Red |
+|  Startup Engineering | UPI · MVP · Scale · GST | Yellow |
+|  DSA & Interview Prep | LeetCode · System Design | Green |
 
 Each path has **8 modules** with XP rewards and progress tracking.
 
 ---
 
-## 📄 License
+##  License
 
 MIT License — free to use, modify, and distribute. See [LICENSE](LICENSE) for details.
 
